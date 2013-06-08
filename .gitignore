@@ -18,3 +18,6 @@ savefile/
 /prelude-modules.el
 projectile-bookmarks.eld
 session*
+/.mc-lists.el
+/ac-comphist.dat
+/plugins/source

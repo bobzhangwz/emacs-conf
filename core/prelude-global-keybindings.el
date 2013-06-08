@@ -111,6 +111,15 @@
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 (global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 
+;; myown key set
+(global-set-key (kbd "C-S-j") 'join-line)
+(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "<f8> q") 'query-replace)
+(global-set-key (kbd "<f8> Q") 'query-replace-regexp)
+
+(global-set-key "\C-v" '(lambda () (interactive) (scroll-up 8)))
+(global-set-key "\M-v" '(lambda () (interactive) (scroll-down 8)))
+
 ;; key chords
 (require 'key-chord)
 

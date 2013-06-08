@@ -41,8 +41,14 @@
 
 (menu-bar-mode -1)
 
+(scroll-bar-mode -1)
+
 ;; the blinking cursor is nothing, but an annoyance
-(blink-cursor-mode -1)
+(blink-cursor-mode 1)
+
+;; truncate line mode off
+(set-default 'truncate-lines t)
+(setq truncate-partial-width-windows nil)
 
 ;; disable startup screen
 (setq inhibit-startup-screen t)
@@ -73,7 +79,16 @@
                                           "%b"))))
 
 ;; use zenburn as the default theme
-(load-theme 'zenburn t)
+
+
+
+(color-theme-initialize)
+;; (load-theme 'adwaita t)
+(color-theme-gray30)
+;; (color-theme-aalto-light)
+;; (load-theme 'zenburn t)
+;; color-theme sets
+(set-default-font "Monofur 12")
 
 (provide 'prelude-ui)
 ;;; prelude-ui.el ends here

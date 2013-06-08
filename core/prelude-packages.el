@@ -36,6 +36,9 @@
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+
 ;; set package-user-dir to be relative to Prelude install path
 (setq package-user-dir (expand-file-name "elpa" prelude-dir))
 (package-initialize)
@@ -47,8 +50,16 @@
     guru-mode helm helm-projectile ido-ubiquitous
     key-chord magit melpa rainbow-mode
     smex solarized-theme undo-tree
-    volatile-highlights yasnippet zenburn-theme)
-  "A list of packages to ensure are installed at launch.")
+    volatile-highlights yasnippet zenburn-theme
+    ;; my packages
+    highlight-indentation cursor-chg auto-complete
+    tabbar tabbar-ruler w3m multiple-cursors
+    sr-speedbar auto-indent-mode
+    ido-complete-space-or-hyphen ido-yes-or-no  ido-sort-mtime
+    idomenu ido-vertical-mode flycheck-color-mode-line
+    move-text auto-highlight-symbol highlight-symbol
+    workgroups dired+ zencoding-mode autopair )
+  "A0 list of packages to ensure are installed at launch.")
 
 (defun prelude-packages-installed-p ()
   "Check if all packages in `prelude-packages' are installed."
