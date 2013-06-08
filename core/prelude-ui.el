@@ -44,7 +44,7 @@
 (scroll-bar-mode -1)
 
 ;; the blinking cursor is nothing, but an annoyance
-(blink-cursor-mode 1)
+(blink-cursor-mode 0)
 
 ;; truncate line mode off
 (set-default 'truncate-lines t)
@@ -75,8 +75,8 @@
 ;; buffer name (if the buffer isn't visiting a file)
 (setq frame-title-format
       '("" invocation-name " Prelude - " (:eval (if (buffer-file-name)
-                                            (abbreviate-file-name (buffer-file-name))
-                                          "%b"))))
+                                                    (abbreviate-file-name (buffer-file-name))
+                                                  "%b"))))
 
 ;; use zenburn as the default theme
 

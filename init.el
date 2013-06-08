@@ -106,13 +106,15 @@ by Prelude.")
  ;; greet the use with some useful tip
  (run-at-time 5 nil 'prelude-tip-of-the-day))
 
+;; own path
+(add-to-list 'load-path "~/.emacs.d/poe-el/")
+(add-to-list 'load-path "~/.emacs.d/plugins/add-ons/")
+
 (load-file "~/.emacs.d/base-conf.el")
 (load-file "~/.emacs.d/manual-conf.el")
 (load-file "~/.emacs.d/project-conf.el")
 
 
-(add-to-list 'load-path "~/.emacs.d/poe-el/")
-(add-to-list 'load-path "~/.emacs.d/plugins/add-ons/")
 (require 'poe-goods)
 (require 'poe-work-compile)
 (require 'poe-project-file)
