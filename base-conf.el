@@ -223,12 +223,13 @@
 ;; (setq tabbar-ruler-popup-toolbar 't) ; If you want a popup toolbar
 (require 'tabbar-ruler)
 (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
-(tabbar-ruler-group-by-projectile-project)
 
-(global-set-key (kbd "M-p")  'tabbar-ruler-tabbar-backward)
-(global-set-key (kbd "M-n") 'tabbar-ruler-tabbar-forward)
-(global-set-key (kbd "C-S-h") 'tabbar-ruler-tabbar-backward-group)
-(global-set-key (kbd "C-S-l")  'tabbar-ruler-tabbar-forward-group)
+;;(tabbar-ruler-group-by-projectile-project)
+
+(global-set-key (kbd "M-j")  'tabbar-ruler-tabbar-backward)
+(global-set-key (kbd "M-k") 'tabbar-ruler-tabbar-forward)
+(global-set-key (kbd "M-P") 'tabbar-ruler-tabbar-backward-group)
+(global-set-key (kbd "M-N")  'tabbar-ruler-tabbar-forward-group)
 
 
 ;;; imenu
@@ -266,3 +267,17 @@
 (setq main-line-separator-style 'arrow)
 (setq main-line-color2 "#36648b")
 (setq main-line-color1 "#123456")
+
+
+;;; fold mode
+
+(require 'fold-dwim)
+(global-set-key (kbd "<f7>")      'fold-dwim-toggle)
+(global-set-key (kbd "C-<f7>")    'fold-dwim-hide-all)
+(global-set-key (kbd "<M-f7>")  'fold-dwim-show-all)
+
+(key-chord-define-global "hh" 'fold-dwim-toggle)
+(key-chord-define-global "uf" 'helm-prelude)
+
+;; (setq projectile-completion-system 'icomplete-mode)
+(setq projectile-use-native-indexing t)

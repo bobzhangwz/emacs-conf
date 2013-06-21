@@ -123,9 +123,9 @@
 ;; key chords
 (require 'key-chord)
 
-(key-chord-define-global "jj" 'ace-jump-word-mode)
-(key-chord-define-global "jl" 'ace-jump-line-mode)
-(key-chord-define-global "jk" 'ace-jump-char-mode)
+(key-chord-define-global "uj" 'ace-jump-word-mode)
+(key-chord-define-global "ul" 'ace-jump-line-mode)
+(key-chord-define-global "uk" 'ace-jump-char-mode)
 (key-chord-define-global "JJ" 'prelude-switch-to-previous-buffer)
 (key-chord-define-global "uu" 'undo-tree-visualize)
 

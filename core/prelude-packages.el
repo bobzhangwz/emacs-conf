@@ -58,7 +58,7 @@
     ido-complete-space-or-hyphen ido-yes-or-no  ido-sort-mtime
     idomenu ido-vertical-mode flycheck-color-mode-line
     move-text auto-highlight-symbol highlight-symbol
-    workgroups dired+ zencoding-mode autopair )
+    workgroups dired+ zencoding-mode autopair fold-dwim main-line)
   "A0 list of packages to ensure are installed at launch.")
 
 (defun prelude-packages-installed-p ()

@@ -21,3 +21,4 @@ session*
 /.mc-lists.el
 /ac-comphist.dat
 /plugins/source
+/tramp

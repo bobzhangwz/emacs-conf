@@ -8,6 +8,7 @@
     ("Work" . "spike-module-work")
     ("Library" . "spike-module-library")
     ("ResourceDesigner" . "spike-module-library")
+    ("Moderator" . "spike-module-moderator")
     ))
 
 (defvar poe-ssp-workspace "/home/poe/workspace/")
