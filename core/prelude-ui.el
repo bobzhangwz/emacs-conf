@@ -44,7 +44,7 @@
 (scroll-bar-mode -1)
 
 ;; the blinking cursor is nothing, but an annoyance
-(blink-cursor-mode 0)
+(blink-cursor-mode 1)
 
 ;; truncate line mode off
 (set-default 'truncate-lines t)

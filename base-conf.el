@@ -29,7 +29,7 @@
 (autopair-global-mode) ;; to enable in all buffers
 
 ;;; ido-mode enable
-(ido-mode t)
+(ido-mode 1)
 (setq ido-enable-flex-matching t)
 (autoload 'idomenu "idomenu" nil t)
 (ido-everywhere 1)
@@ -44,7 +44,7 @@
 ;;; anything
 (require 'helm-config)
 ;; (require 'helm-anything)
-(helm-mode 1)
+(helm-mode 0)
 (add-hook 'eshell-mode-hook
           #'(lambda ()
               (define-key eshell-mode-map
@@ -185,15 +185,15 @@
 (global-set-key (kbd "M-L") (lambda () (interactive) (enlarge-window 1 t)))
 
 ;; autoindent mode
-(setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
-(require 'auto-indent-mode)
+;; (setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
+;; (require 'auto-indent-mode)
 ;; If you (almost) always want this on, add the following to ~/.emacs:
-(auto-indent-global-mode 1)
+;; (auto-indent-global-mode 1)
 
 ;;; cursor mode
-(require 'cursor-chg)  ; Load this library
-(change-cursor-mode 1) ; On for overwrite/read-only/input mode
-(toggle-cursor-type-when-idle 1) ; On when idle
+;; (require 'cursor-chg)  ; Load this library
+;; (change-cursor-mode 1) ; On for overwrite/read-only/input mode
+;; (toggle-cursor-type-when-idle 1) ; On when idle
 
 
 ;;; multiple-cursors
@@ -250,6 +250,7 @@
 ;;; workgroup setting
 (defun frame-setting ()
   (load-file "~/.emacs.d/plugins/workgroups2-conf.el")
+  (set-cursor-color "gold")
   )
 
 (if (and (fboundp 'daemonp) (daemonp))
@@ -277,7 +278,43 @@
 (global-set-key (kbd "<M-f7>")  'fold-dwim-show-all)
 
 (key-chord-define-global "hh" 'fold-dwim-toggle)
-(key-chord-define-global "uf" 'helm-prelude)
-
+(key-chord-define-global "vf" 'helm-prelude)
+(key-chord-define-global "vv" 'vi-mode)
 ;; (setq projectile-completion-system 'icomplete-mode)
 (setq projectile-use-native-indexing t)
+
+
+;;; eclim mode
+(require 'eclim)
+(global-eclim-mode)
+(require 'eclimd)
+(custom-set-variables
+ '(eclim-eclipse-dirs '("/home/software/eclipse/")))
+
+(setq help-at-pt-display-when-idle t)
+(setq help-at-pt-timer-delay 0.1)
+(help-at-pt-set-timer)
+
+;; regular auto-complete initialization
+(require 'auto-complete-config)
+(ac-config-default)
+
+;; add the emacs-eclim source
+(require 'ac-emacs-eclim-source)
+(ac-emacs-eclim-config)
+(setq eclimd-executable "/home/software/eclipse/eclimd")
+(setq eclim-executable "/home/software/eclipse/eclim")
+(setq eclimd-default-workspace "/home/workspace")
+(global-set-key (kbd "C-c C-v p") 'eclim-manage-projects)
+(add-hook 'eclim-mode-hook
+          (lambda ()
+            (local-set-key (kbd "<f5>") 'eclim-java-import-organize)
+            (local-set-key (kbd "C-c C-r t") 'eclim-java-import-organize)
+            (local-set-key (kbd "C-c C-v f t") 'eclim-java-find-type)
+            (local-set-key (kbd "M-.") 'eclim-java-find-declaration)
+            (local-set-key (kbd "C-c C-v f r") 'eclim-java-find-references)
+            (local-set-key (kbd "C-c C-v i") 'eclim-java-show-documentation-for-current-element)
+            (local-set-key (kbd "C-c C-v o") 'eclim-java-find-generic)
+            (local-set-key (kbd "C-c C-v e") 'eclim-problems)
+            (local-set-key (kbd "C-c C-c") 'eclim-run-class)
+            ))
