@@ -78,6 +78,10 @@ Will only occur if prelude-whitespace is also enabled."
 (setq-default tab-width 2)            ;; but maintain correct appearance
 (setq-default tab-always-indent "complete")
 
+(setq-default c-basic-offset 2)
+(setq-default c-basic-indent 2)
+(setq-default c-indent-level 2)
+
 ;; delete the selection with a keypress
 (delete-selection-mode t)
 

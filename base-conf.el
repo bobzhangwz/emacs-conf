@@ -25,8 +25,13 @@
 
 (setq prelude-guru nil)
 ;;; autopair
+
 (require 'autopair)
-(autopair-global-mode) ;; to enable in all buffers
+(autopair-global-mode)
+(require 'auto-pair+)
+
+
+;; (autopair-global-mode) ;; to enable in all buffers
 
 ;;; ido-mode enable
 (ido-mode 1)
@@ -76,25 +81,26 @@
 (global-whitespace-mode)
 
 ;; ;;; elscrren
-;; (elscreen-start)
-;; (require 'elscreen-buffer-list)
-;; ;; show title on frame
-;; (defun elscreen-frame-title-update ()
-;;   (when (elscreen-screen-modified-p 'elscreen-frame-title-update)
-;;     (let* ((screen-list (sort (elscreen-get-screen-list) '<))
-;;            (screen-to-name-alist (elscreen-get-screen-to-name-alist))
-;;            (title (mapconcat
-;;                    (lambda (screen)
-;;                      (format "%d%s %s"
-;;                              screen (elscreen-status-label screen)
-;;                              (get-alist screen screen-to-name-alist)))
-;;                    screen-list " ")))
-;;       (if (fboundp 'set-frame-name)
-;;           (set-frame-name title)
-;;         (setq frame-title-format title)))))
 
-;; (eval-after-load "elscreen"
-;;   '(add-hook 'elscreen-screen-update-hook 'elscreen-frame-title-update))
+(elscreen-start)
+(require 'elscreen-buffer-list)
+;; show title on frame
+(defun elscreen-frame-title-update ()
+  (when (elscreen-screen-modified-p 'elscreen-frame-title-update)
+    (let* ((screen-list (sort (elscreen-get-screen-list) '<))
+           (screen-to-name-alist (elscreen-get-screen-to-name-alist))
+           (title (mapconcat
+                   (lambda (screen)
+                     (format "%d%s %s"
+                             screen (elscreen-status-label screen)
+                             (get-alist screen screen-to-name-alist)))
+                   screen-list " ")))
+      (if (fboundp 'set-frame-name)
+          (set-frame-name title)
+        (setq frame-title-format title)))))
+
+(eval-after-load "elscreen"
+  '(add-hook 'elscreen-screen-update-hook 'elscreen-frame-title-update))
 
 ;;; sr-speedbar
 (require 'sr-speedbar)
@@ -178,6 +184,8 @@
           (lambda ()
             (ibuffer-switch-to-saved-filter-groups "default")))
 
+
+
 ;;; tiling - mode
 (global-set-key (kbd "M-J") (lambda () (interactive) (enlarge-window 1)))
 (global-set-key (kbd "M-K") (lambda () (interactive) (enlarge-window -1)))
@@ -215,22 +223,25 @@
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ;; tabbar-mode ---conflict with el-screen
-(require 'tabbar)
-(tabbar-mode)
-(setq tabbar-ruler-global-tabbar 't) ; If you want tabbar
-;; (setq tabbar-ruler-global-ruler 't) ; if you want a global ruler
-;; (setq tabbar-ruler-popup-menu 't) ; If you want a popup menu.
-;; (setq tabbar-ruler-popup-toolbar 't) ; If you want a popup toolbar
-(require 'tabbar-ruler)
-(setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
+;; (require 'tabbar)
+;; (tabbar-mode)
+;; (setq tabbar-ruler-global-tabbar 't) ; If you want tabbar
+;; ;; (setq tabbar-ruler-global-ruler 't) ; if you want a global ruler
+;; ;; (setq tabbar-ruler-popup-menu 't) ; If you want a popup menu.
+;; ;; (setq tabbar-ruler-popup-toolbar 't) ; If you want a popup toolbar
+;; (require 'tabbar-ruler)
+;; (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
-;;(tabbar-ruler-group-by-projectile-project)
+;; ;;(tabbar-ruler-group-by-projectile-project)
 
-(global-set-key (kbd "M-j")  'tabbar-ruler-tabbar-backward)
-(global-set-key (kbd "M-k") 'tabbar-ruler-tabbar-forward)
-(global-set-key (kbd "M-P") 'tabbar-ruler-tabbar-backward-group)
-(global-set-key (kbd "M-N")  'tabbar-ruler-tabbar-forward-group)
+;; (global-set-key (kbd "M-j")  'tabbar-ruler-tabbar-backward)
+;; (global-set-key (kbd "M-k") 'tabbar-ruler-tabbar-forward)
+;; (global-set-key (kbd "M-P") 'tabbar-ruler-tabbar-backward-group)
+;; (global-set-key (kbd "M-N")  'tabbar-ruler-tabbar-forward-group)
 
+(require 'wcy-swbuffer)
+(global-set-key (kbd "M-j")  'wcy-switch-buffer-backward)
+(global-set-key (kbd "M-k") 'wcy-switch-buffer-forward)
 
 ;;; imenu
 (global-set-key (kbd "M-[") 'idomenu)
@@ -246,29 +257,6 @@
 ;;; move text
 (require 'move-text)
 (move-text-default-bindings)
-
-;;; workgroup setting
-(defun frame-setting ()
-  (load-file "~/.emacs.d/plugins/workgroups2-conf.el")
-  (set-cursor-color "gold")
-  )
-
-(if (and (fboundp 'daemonp) (daemonp))
-    (add-hook 'after-make-frame-functions
-              (lambda (frame)
-                (with-selected-frame frame
-                  ()
-                  )))
-  (progn (frame-setting)
-         (wg-load "~/.emacs.d/savefile/.workspace")
-         ))
-
-;;; main-line
-(require 'main-line)
-(setq main-line-separator-style 'arrow)
-(setq main-line-color2 "#36648b")
-(setq main-line-color1 "#123456")
-
 
 ;;; fold mode
 
@@ -318,3 +306,24 @@
             (local-set-key (kbd "C-c C-v e") 'eclim-problems)
             (local-set-key (kbd "C-c C-c") 'eclim-run-class)
             ))
+
+
+;; workgroup setting, it would stop after it.
+(defun frame-setting ()
+  (load-file "~/.emacs.d/plugins/workgroups2-conf.el")
+  (set-cursor-color "gold")
+  ;;; main-line
+  (require 'main-line)
+  (setq main-line-separator-style 'arrow)
+  (setq main-line-color2 "#36648b")
+  (setq main-line-color1 "#123456")
+  )
+
+
+;;; browse-kill-ring
+
+(require 'browse-kill-ring)
+(browse-kill-ring-default-keybindings)
+(global-set-key "\C-cy" 'browse-kill-ring)
+
+;; https://github.com/emacsmirror/navi-mode ;;; can have a try

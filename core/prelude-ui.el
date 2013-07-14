@@ -88,7 +88,7 @@
 ;; (color-theme-aalto-light)
 ;; (load-theme 'zenburn t)
 ;; color-theme sets
-(set-default-font "Monofur 12")
+(set-default-font "Consolas 11")
 
 (provide 'prelude-ui)
 ;;; prelude-ui.el ends here

@@ -2,4 +2,4 @@
 # name: expect
 # key: ex
 # --
-expect($1).toBe
+expect( $1 ).to

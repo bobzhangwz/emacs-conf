@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: scope
-# key: scope
+# key: sc
 # --
 $scope.
