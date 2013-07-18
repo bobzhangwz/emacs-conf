@@ -26,9 +26,9 @@
 (setq prelude-guru nil)
 ;;; autopair
 
-(require 'autopair)
-(autopair-global-mode)
-(require 'auto-pair+)
+;; (require 'autopair)
+;; (autopair-global-mode)
+;; (require 'auto-pair+)
 
 
 ;; (autopair-global-mode) ;; to enable in all buffers

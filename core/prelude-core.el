@@ -88,14 +88,19 @@ Position the cursor at it's beginning, according to the current mode."
   (move-beginning-of-line nil)
   (newline-and-indent)
   (forward-line -1)
-  (funcall indent-line-function))
+  (indent-according-to-mode))
 
-(defun prelude-smart-open-line ()
+(defun prelude-smart-open-line (arg)
   "Insert an empty line after the current line.
-Position the cursor at its beginning, according to the current mode."
-  (interactive)
-  (move-end-of-line nil)
-  (newline-and-indent))
+Position the cursor at its beginning, according to the current mode.
+
+With a prefix ARG open line above the current line."
+  (interactive "P")
+  (if arg
+      (prelude-smart-open-line-above)
+    (progn
+      (move-end-of-line nil)
+      (newline-and-indent))))
 
 (defun prelude-top-join-line ()
   "Join the current line with the line beneath it."
@@ -217,6 +222,30 @@ there's a region, all lines that region covers will be duplicated."
                   (setq end (point))))
       (goto-char (+ origin (* (length region) arg) arg)))))
 
+;; TODO: Remove code duplication by extracting something more generic
+(defun prelude-duplicate-and-comment-current-line-or-region (arg)
+  "Duplicates and comments the current line or region ARG times.
+If there's no region, the current line will be duplicated.  However, if
+there's a region, all lines that region covers will be duplicated."
+  (interactive "p")
+  (let (beg end (origin (point)))
+    (if (and mark-active (> (point) (mark)))
+        (exchange-point-and-mark))
+    (setq beg (line-beginning-position))
+    (if mark-active
+        (exchange-point-and-mark))
+    (setq end (line-end-position))
+    (let ((region (buffer-substring-no-properties beg end)))
+      (comment-or-uncomment-region beg end)
+      (setq end (line-end-position))
+      (-dotimes arg
+                (lambda (n)
+                  (goto-char end)
+                  (newline)
+                  (insert region)
+                  (setq end (point))))
+      (goto-char (+ origin (* (length region) arg) arg)))))
+
 (defun prelude-rename-file-and-buffer ()
   "Renames current buffer and file it is visiting."
   (interactive)
@@ -315,13 +344,6 @@ the current buffer."
   "Insert a timestamp according to locale's date and time format."
   (interactive)
   (insert (format-time-string "%c" (current-time))))
-
-(defun prelude-conditionally-enable-paredit-mode ()
-  "Enable `paredit-mode' in the minibuffer, during `eval-expression'."
-  (if (eq this-command 'eval-expression)
-      (paredit-mode 1)))
-
-(add-hook 'minibuffer-setup-hook 'prelude-conditionally-enable-paredit-mode)
 
 (defun prelude-recentf-ido-find-file ()
   "Find a recent file using ido."

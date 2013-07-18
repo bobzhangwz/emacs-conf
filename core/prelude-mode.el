@@ -39,6 +39,7 @@
     (define-key map (kbd "C-c g") 'prelude-google)
     ;; mimic popular IDEs binding, note that it doesn't work in a terminal session
     (define-key map [(shift return)] 'prelude-smart-open-line)
+    (define-key map (kbd "M-o") 'prelude-smart-open-line)
     (define-key map [(control shift return)] 'prelude-smart-open-line-above)
     (define-key map [(control shift up)]  'prelude-move-line-up)
     (define-key map [(control shift down)]  'prelude-move-line-down)
@@ -53,6 +54,7 @@
     (define-key map (kbd "C-c s") 'prelude-swap-windows)
     (define-key map (kbd "C-c D") 'prelude-delete-file-and-buffer)
     (define-key map (kbd "C-c d") 'prelude-duplicate-current-line-or-region)
+    (define-key map (kbd "C-c M-d") 'prelude-duplicate-and-comment-current-line-or-region)
     (define-key map (kbd "C-c r") 'prelude-rename-file-and-buffer)
     (define-key map (kbd "C-c t") 'prelude-visit-term-buffer)
     (define-key map (kbd "C-c k") 'prelude-kill-other-buffers)

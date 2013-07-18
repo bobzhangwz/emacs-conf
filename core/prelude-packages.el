@@ -45,8 +45,8 @@
 
 (defvar prelude-packages
   '(ace-jump-mode ack-and-a-half dash diminish elisp-slime-nav
-    expand-region flycheck gist
-    git-commit-mode gitconfig-mode gitignore-mode
+    expand-region flx-ido flycheck gist
+    git-commit-mode gitconfig-mode gitignore-mode grizzl
     guru-mode helm helm-projectile ido-ubiquitous
     key-chord magit melpa rainbow-mode
     smex solarized-theme undo-tree
@@ -59,8 +59,9 @@
     idomenu ido-vertical-mode flycheck-color-mode-line
     move-text auto-highlight-symbol highlight-symbol
     workgroups2 dired+ zencoding-mode autopair fold-dwim main-line
-    browse-kill-ring)
-  "A0 list of packages to ensure are installed at launch.")
+    browse-kill-ring smartparens )
+  "A list of packages to ensure are installed at launch.")
+
 
 (defun prelude-packages-installed-p ()
   "Check if all packages in `prelude-packages' are installed."
