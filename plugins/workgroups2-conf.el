@@ -9,7 +9,19 @@
       wg-morph-on nil)         ; animation off
 ;; Keyboard shortcuts - load, save, switch
 
-(global-set-key (kbd "s-z")					'wg-switch-to-workgroup)
-(global-set-key (kbd "s-/")					'wg-switch-to-previous-workgroup)
-(workgroups-mode 1)          ; Activate workgroups
+(global-set-key (kbd "s-z") 'wg-switch-to-workgroup)
+(global-set-key (kbd "C-c w f") 'wg-switch-to-workgroup)
+(global-set-key (kbd "C-c w w") 'wg-switch-to-previous-workgroup)
+
+(condition-case ex
+    (workgroups-mode 1)          ; Activate workgroups
+  ('error (message "wrong in workgroup init")))
+
 (desktop-save-mode 0)
+
+(global-set-key (kbd "C-c w .") 'wg-reload-session)
+
+(if (and (fboundp 'daemonp) (daemonp))
+    ()
+  ;; (add-hook 'after-make-frame-functions  'load-wg-session)
+  (wg-reload-session))

@@ -69,6 +69,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 
 (global-set-key "\C-c4" 'split-window-4)
 (global-set-key (kbd "<C-tab>") 'roll-3-buffers-anti-clockwise)
+(global-set-key (kbd "C-c \\") 'roll-3-buffers-anti-clockwise)
 
 
 (defvar zh-buffer-exclude-regexps
@@ -139,7 +140,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
       (indent-rigidly (line-beginning-position) (line-end-position) -2)
     (indent-rigidly start end -2)))
 
-(global-set-key (kbd "<backtab>") 'zh-back-tab)
+;; (global-set-key (kbd "<backtab>") 'zh-back-tab)
 
 ;; (global-set-key (kbd "<f12>") 'speedbar-get-focus)
 ;; (global-set-key (kbd "<M-f12>") 'speedbar-toggle-show-all-files)

@@ -3,10 +3,12 @@
         (add-hook hook (lambda ()
                          (set (make-local-variable 'highlight-indentation-offset) 4)
                          (highlight-indentation-mode)
+                         (setq ac-auto-start 3)
                          (hs-minor-mode)
                          )))
       '(coffee-mode-hook
         emacs-lisp-mode-hook
+        ruby-mode
         python-mode-hook))
 
 (mapc (lambda (hook)

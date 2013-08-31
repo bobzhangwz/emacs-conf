@@ -84,9 +84,10 @@
 
 (color-theme-initialize)
 ;; (load-theme 'adwaita t)
-(color-theme-gray30)
+;; (color-theme-gray30)
+;; (color-theme-emacs-nw)
 ;; (color-theme-aalto-light)
-;; (load-theme 'zenburn t)
+(load-theme 'tsdh-dark t)
 ;; color-theme sets
 (set-default-font "Consolas 11")
 

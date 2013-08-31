@@ -302,7 +302,7 @@ The body of the advice is in BODY."
       ;; otherwise fallback to helm-mini
       (helm-mini))
     ;; fall back to helm mini if an error occurs (usually in projectile-project-root)
-    (error (helm-mini))))
+    (error ())))
 
 ;; shorter aliases for ack-and-a-half commands
 (defalias 'ack 'ack-and-a-half)

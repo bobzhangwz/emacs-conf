@@ -124,6 +124,17 @@
 ;;; autocomplete
 (load-file "~/.emacs.d/plugins/auto-complete-conf.el")
 ;; yasnippet
+
+;; load yasnippet
+(require 'yasnippet)
+(add-to-list 'yas-snippet-dirs prelude-snippets-dir)
+(add-to-list 'yas-snippet-dirs prelude-personal-snippets-dir)
+(yas-global-mode 1)
+
+;; term-mode does not play well with yasnippet
+(add-hook 'term-mode-hook (lambda ()
+                            (yas-minor-mode -1)))
+
 (add-to-list 'ac-sources 'ac-source-yasnippet)
 
 ;;; eproject
@@ -261,6 +272,7 @@
 ;;; fold mode
 
 (require 'fold-dwim)
+
 (global-set-key (kbd "<f7>")      'fold-dwim-toggle)
 (global-set-key (kbd "C-<f7>")    'fold-dwim-hide-all)
 (global-set-key (kbd "<M-f7>")  'fold-dwim-show-all)
@@ -288,36 +300,32 @@
 (ac-config-default)
 
 ;; add the emacs-eclim source
-(require 'ac-emacs-eclim-source)
-(ac-emacs-eclim-config)
-(setq eclimd-executable "/home/software/eclipse/eclimd")
-(setq eclim-executable "/home/software/eclipse/eclim")
-(setq eclimd-default-workspace "/home/workspace")
-(global-set-key (kbd "C-c C-v p") 'eclim-manage-projects)
-(add-hook 'eclim-mode-hook
-          (lambda ()
-            (local-set-key (kbd "<f5>") 'eclim-java-import-organize)
-            (local-set-key (kbd "C-c C-r t") 'eclim-java-import-organize)
-            (local-set-key (kbd "C-c C-v f t") 'eclim-java-find-type)
-            (local-set-key (kbd "M-.") 'eclim-java-find-declaration)
-            (local-set-key (kbd "C-c C-v f r") 'eclim-java-find-references)
-            (local-set-key (kbd "C-c C-v i") 'eclim-java-show-documentation-for-current-element)
-            (local-set-key (kbd "C-c C-v o") 'eclim-java-find-generic)
-            (local-set-key (kbd "C-c C-v e") 'eclim-problems)
-            (local-set-key (kbd "C-c C-c") 'eclim-run-class)
-            ))
+;; (require 'ac-emacs-eclim-source)
+;; (ac-emacs-eclim-config)
+;; (setq eclimd-executable "/home/software/eclipse/eclimd")
+;; (setq eclim-executable "/home/software/eclipse/eclim")
+;; (setq eclimd-default-workspace "/home/workspace")
+;; (global-set-key (kbd "C-c C-v p") 'eclim-manage-projects)
+;; (add-hook 'eclim-mode-hook
+;;           (lambda ()
+;;             (local-set-key (kbd "<f5>") 'eclim-java-import-organize)
+;;             (local-set-key (kbd "C-c C-r t") 'eclim-java-import-organize)
+;;             (local-set-key (kbd "C-c C-v f t") 'eclim-java-find-type)
+;;             (local-set-key (kbd "M-.") 'eclim-java-find-declaration)
+;;             (local-set-key (kbd "C-c C-v f r") 'eclim-java-find-references)
+;;             (local-set-key (kbd "C-c C-v i") 'eclim-java-show-documentation-for-current-element)
+;;             (local-set-key (kbd "C-c C-v o") 'eclim-java-find-generic)
+;;             (local-set-key (kbd "C-c C-v e") 'eclim-problems)
+;;             (local-set-key (kbd "C-c C-c") 'eclim-run-class)
+;;             ))
 
-
-;; workgroup setting, it would stop after it.
-(defun frame-setting ()
-  (load-file "~/.emacs.d/plugins/workgroups2-conf.el")
-  (set-cursor-color "gold")
+(set-cursor-color "gold")
   ;;; main-line
-  (require 'main-line)
-  (setq main-line-separator-style 'arrow)
-  (setq main-line-color2 "#36648b")
-  (setq main-line-color1 "#123456")
-  )
+(require 'main-line)
+(setq main-line-separator-style 'arrow)
+(setq main-line-color2 "#36648b")
+(setq main-line-color1 "#123456")
+
 
 
 ;;; browse-kill-ring
@@ -326,4 +334,54 @@
 (browse-kill-ring-default-keybindings)
 (global-set-key "\C-cy" 'browse-kill-ring)
 
+(global-set-key (kbd "RET") 'newline-and-indent)
+
+;;; compile.el
+(require 'compile)
+(require 'smart-compile)
+;; this means hitting the compile button always saves the buffer
+;; having to separately hit C-x C-s is a waste of time
+(setq mode-compile-always-save-buffer-p nil)
+;; make the compile window stick at 12 lines tall
+(setq compilation-window-height 12)
+
+(defun my-compilation-hook ()
+  (when (not (get-buffer-window "*compilation*"))
+    (save-selected-window
+      (save-excursion
+        (let* ((w (split-window-vertically))
+               (h (window-height w)))
+          (select-window w)
+          (switch-to-buffer "*compilation*")
+          (shrink-window (- h 10)))))))
+
+(add-hook 'compilation-mode-hook 'my-compilation-hook)
+
+;; from enberg on #emacs
+;; if the compilation has a zero exit code,
+;; the windows disappears after two seconds
+;; otherwise it stays
+(setq compilation-finish-function
+      (lambda (buf str)
+        (unless (string-match "exited abnormally" str)
+          ;;no errors, make the compilation window go away in a few seconds
+          (run-at-time
+           "2 sec" nil 'delete-windows-on
+           (get-buffer-create "*compilation*"))
+          (message "No Compilation Errors!"))))
+;; one-button testing, tada!
+(global-set-key [f11] 'compile)
+
 ;; https://github.com/emacsmirror/navi-mode ;;; can have a try
+(defun terminal-init ()
+  (interactive)
+  "Terminal initialization function for gnome-terminal."
+
+  ;; This is a dirty hack that I accidentally stumbled across:
+  ;;  initializing "rxvt" first and _then_ "xterm" seems
+  ;;  to make the colors work... although I have no idea why.
+  (tty-run-terminal-initialization (selected-frame) "rxvt")
+
+  (tty-run-terminal-initialization (selected-frame) "xterm"))
+
+(add-hook 'term-setup-hook 'terminal-init)

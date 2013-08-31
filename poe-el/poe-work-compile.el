@@ -9,6 +9,9 @@
     ("Library" . "spike-module-library")
     ("ResourceDesigner" . "spike-module-library")
     ("Moderator" . "spike-module-moderator")
+    ("MyDetails" . "spike-module-mydetails")
+    ("SchoolAccount" . "spike-module-account")
+    ("Overview" . "spike-module-langlab")
     ))
 
 (defvar poe-ssp-workspace "/home/poe/workspace/")

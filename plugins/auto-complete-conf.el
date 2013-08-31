@@ -41,6 +41,7 @@
 (define-key ac-completing-map (kbd "<return>") 'ac-complete)
 ;; (global-set-key "." 'semantic-complete-self-insert)
 (setq ac-ignore-case t)
+;; (setq ac-auto-start nil)
 (setq ac-auto-start nil)
 (setq ac-dwim t)
 

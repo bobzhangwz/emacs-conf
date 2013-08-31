@@ -35,18 +35,34 @@
 (require 'prelude-programming)
 (prelude-ensure-module-deps '(haskell-mode))
 
-(eval-after-load 'haskell-mode
-  '(progn
-     (defun prelude-haskell-mode-defaults ()
-       (subword-mode +1)
-       (turn-on-haskell-doc-mode)
-       (turn-on-haskell-indentation))
+(defun rgr/hayoo()
+  (interactive)
+  (let* ((default (region-or-word-at-point))
+         (term (read-string (format "Hayoo for the following phrase (%s): "
+                                    default))))
+    (let ((term (if (zerop (length term)) default term)))
+      (browse-url (format "http://holumbus.fh-wedel.de/hayoo/hayoo.html?query=%s&start" term)))))
 
-     (setq prelude-haskell-mode-hook 'prelude-haskell-mode-defaults)
+(defun rgr/hayoo-b ()
+  (interactive)
+  (browse-url (format "http://holumbus.fh-wedel.de/hayoo/hayoo.html?query=%s&start"
+                      (region-or-word-at-point))))
 
-     (add-hook 'haskell-mode-hook (lambda ()
-                                    (run-hooks 'prelude-haskell-mode-hook)))))
+    (eval-after-load 'haskell-mode
+      '(progn
+         (defun prelude-haskell-mode-defaults ()
+           (subword-mode +1)
+           (turn-on-haskell-doc-mode)
+           (define-key haskell-mode-map (kbd "C-c ?") 'rgr/hayoo)
+           (define-key haskell-mode-map (kbd "C-c C-?") 'rgr/hayoo-b)
+           (turn-on-haskell-indentation))
 
-(provide 'prelude-haskell)
+         (setq prelude-haskell-mode-hook 'prelude-haskell-mode-defaults)
+
+         (add-hook 'haskell-mode-hook (lambda ()
+                                        (run-hooks 'prelude-haskell-mode-hook)))))
+
+
+    (provide 'prelude-haskell)
 
 ;;; prelude-haskell.el ends here

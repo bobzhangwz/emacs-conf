@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: inject
+# key: inj
+# --
+beforeEach inject (_$rootScope_, _$controller_, _$window_,
+           _$location_, _$httpBackend_, _$routeParams_) ->
