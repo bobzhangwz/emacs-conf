@@ -393,3 +393,37 @@
 (setq git-gutter:modified-sign "=")
 (setq git-gutter:added-sign "+")
 (setq git-gutter:deleted-sign "☂")
+
+;;; mmm-mode
+(require 'mmm-auto)
+
+(setq mmm-global-mode 'auto)
+
+(mmm-add-mode-ext-class 'html-erb-mode "\\.html\\.erb\\'" 'erb)
+(mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
+(mmm-add-mode-ext-class 'html-erb-mode nil 'html-js)
+(mmm-add-mode-ext-class 'html-erb-mode nil 'html-css)
+
+(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . html-erb-mode))
+(add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'" . html-erb-mode))
+
+;; Optional settings:
+
+(setq mmm-submode-decoration-level 2
+      mmm-parse-when-idle t)
+
+;; nXML as primary mode (supports only JS and CSS subregions):
+
+(mmm-add-mode-ext-class 'nxml-web-mode nil 'html-js)
+(mmm-add-mode-ext-class 'nxml-web-mode nil 'html-css)
+
+(add-to-list 'auto-mode-alist '("\\.xhtml\\'" . nxml-web-mode))
+
+;;; multi-web
+(setq mweb-default-major-mode 'html-erb-mode)
+(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+                  (js-mode "<script[^>]*>" "</script>")
+                  (ruby-mode "<%=" "%>")
+                  (css-mode "<style[^>]*>" "</style>")))
+(setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5" "erb" "ejs"))
+(multi-web-global-mode 1)
