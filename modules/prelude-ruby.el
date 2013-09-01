@@ -55,6 +55,16 @@
 
 (define-key 'help-command (kbd "R") 'yari)
 
+(add-to-list 'hs-special-modes-alist
+             '(ruby-mode
+               "\\(def\\|do\\)"
+               "end"
+               "#"
+               (lambda (arg) (ruby-end-of-block))
+               nil
+               ))
+
+
 (eval-after-load 'ruby-mode
   '(progn
      (defun prelude-ruby-mode-defaults ()
@@ -62,6 +72,7 @@
        ;; turn off the annoying input echo in irb
        (setq comint-process-echoes t)
        (ruby-tools-mode +1)
+       (hs-minor-mode +1)
        ;; CamelCase aware editing operations
        (subword-mode +1))
 

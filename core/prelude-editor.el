@@ -77,6 +77,10 @@ Will only occur if prelude-whitespace is also enabled."
 (setq-default indent-tabs-mode nil)   ;; don't use tabs to indent
 (setq-default tab-width 2)            ;; but maintain correct appearance
 (setq-default tab-always-indent "complete")
+(setq tab-stop-list (number-sequence 2 200 2))
+(setq-default standard-indent 2)
+
+;; (setq indent-line-function 'insert-tab)
 
 (setq-default c-basic-offset 2)
 (setq-default c-basic-indent 2)
