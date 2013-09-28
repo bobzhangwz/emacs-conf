@@ -84,6 +84,7 @@
 
 (elscreen-start)
 (require 'elscreen-buffer-list)
+(global-set-key (kbd "C-x w s") 'elscreen-swap)
 ;; show title on frame
 (defun elscreen-frame-title-update ()
   (when (elscreen-screen-modified-p 'elscreen-frame-title-update)
@@ -120,7 +121,7 @@
 (defun highlight-hooks()
   (highlight-symbol-mode t))
 (global-set-key [f9] 'highlight-symbol-at-point)
-
+(key-chord-define-global "99" 'highlight-symbol-at-point)
 ;;; autocomplete
 (load-file "~/.emacs.d/plugins/auto-complete-conf.el")
 ;; yasnippet
@@ -149,6 +150,7 @@
                 (or
                  (mode . c-mode)
                  (mode . c++-mode)
+                 (mode . ruby-mode)
                  (mode . python-mode)
                  (mode . coffee-mode)
                  (mode . scala-mode)
@@ -278,7 +280,6 @@
 (global-set-key (kbd "<M-f7>")  'fold-dwim-show-all)
 
 (key-chord-define-global "hh" 'fold-dwim-toggle)
-(key-chord-define-global "vf" 'helm-prelude)
 (key-chord-define-global "vv" 'vi-mode)
 ;; (setq projectile-completion-system 'icomplete-mode)
 (setq projectile-use-native-indexing t)
@@ -419,11 +420,11 @@
 
 (add-to-list 'auto-mode-alist '("\\.xhtml\\'" . nxml-web-mode))
 
-;;; multi-web
-(setq mweb-default-major-mode 'html-erb-mode)
-(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-                  (js-mode "<script[^>]*>" "</script>")
-                  (ruby-mode "<%=" "%>")
-                  (css-mode "<style[^>]*>" "</style>")))
-(setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5" "erb" "ejs"))
-(multi-web-global-mode 1)
+;; ;;; multi-web
+;; (setq mweb-default-major-mode 'html-erb-mode)
+;; (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+;;                   (js-mode "<script[^>]*>" "</script>")
+;;                   (ruby-mode "<%= \\|<% " "%>")
+;;                   (css-mode "<style[^>]*>" "</style>")))
+;; (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5" "erb" "ejs"))
+;; (multi-web-global-mode 1)

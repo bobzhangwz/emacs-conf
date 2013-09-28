@@ -70,6 +70,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (global-set-key "\C-c4" 'split-window-4)
 (global-set-key (kbd "<C-tab>") 'roll-3-buffers-anti-clockwise)
 (global-set-key (kbd "C-c \\") 'roll-3-buffers-anti-clockwise)
+(global-set-key (kbd "M-O") 'roll-3-buffers-anti-clockwise)
 
 
 (defvar zh-buffer-exclude-regexps

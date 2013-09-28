@@ -123,12 +123,12 @@
 ;; key chords
 (require 'key-chord)
 
-(key-chord-define-global "vj" 'ace-jump-word-mode)
-(key-chord-define-global "vl" 'ace-jump-line-mode)
-(key-chord-define-global "vk" 'ace-jump-char-mode)
+(key-chord-define-global "jm" 'ace-jump-word-mode)
+(key-chord-define-global "jl" 'ace-jump-line-mode)
+(key-chord-define-global "jk" 'ace-jump-char-mode)
 (key-chord-define-global "JJ" 'prelude-switch-to-previous-buffer)
 (key-chord-define-global "uu" 'undo-tree-visualize)
-(key-chord-define-global "vq" 'query-replace)
+(key-chord-define-global "qq" 'query-replace)
 (key-chord-define-global "vp" 'query-replace-regexp)
 
 (key-chord-mode +1)
