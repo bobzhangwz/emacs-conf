@@ -385,7 +385,7 @@
 
   (tty-run-terminal-initialization (selected-frame) "xterm"))
 
-(add-hook 'term-setup-hook 'terminal-init)
+;; (add-hook 'term-setup-hook 'terminal-init)
 
 
 

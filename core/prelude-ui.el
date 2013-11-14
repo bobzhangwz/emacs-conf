@@ -89,7 +89,7 @@
 ;; (color-theme-aalto-light)
 (load-theme 'tsdh-dark t)
 ;; color-theme sets
-(set-default-font "Consolas 11")
+(set-default-font "monofur 11")
 
 (provide 'prelude-ui)
 ;;; prelude-ui.el ends here

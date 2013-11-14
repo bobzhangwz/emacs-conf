@@ -13,6 +13,8 @@
     ("SchoolAccount" . "spike-module-account")
     ("Overview" . "spike-module-langlab")
     ("Manager" . "spike-module-manager")
+    ("Login" . "spike-module-login")
+    ("MyStudents" . "spike-module-students")
     ))
 
 (defvar poe-ssp-workspace "/home/poe/workspace/")
