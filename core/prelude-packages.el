@@ -59,7 +59,8 @@
     idomenu ido-vertical-mode flycheck-color-mode-line
     move-text auto-highlight-symbol highlight-symbol
     workgroups2 dired+ zencoding-mode autopair fold-dwim main-line
-    browse-kill-ring smartparens )
+    browse-kill-ring smartparens color-theme elscreen smart-compile
+    git-gutter ensime)
   "A list of packages to ensure are installed at launch.")
 
 

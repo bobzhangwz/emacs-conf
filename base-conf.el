@@ -286,15 +286,15 @@
 
 
 ;;; eclim mode
-(require 'eclim)
-(global-eclim-mode)
-(require 'eclimd)
-(custom-set-variables
- '(eclim-eclipse-dirs '("/home/software/eclipse/")))
+;; (require 'eclim)
+;; (global-eclim-mode)
+;; (require 'eclimd)
+;; (custom-set-variables
+;;  '(eclim-eclipse-dirs '("/home/software/eclipse/")))
 
-(setq help-at-pt-display-when-idle t)
-(setq help-at-pt-timer-delay 0.1)
-(help-at-pt-set-timer)
+;; (setq help-at-pt-display-when-idle t)
+;; (setq help-at-pt-timer-delay 0.1)
+;; (help-at-pt-set-timer)
 
 ;; regular auto-complete initialization
 (require 'auto-complete-config)
@@ -396,29 +396,29 @@
 (setq git-gutter:deleted-sign "☂")
 
 ;;; mmm-mode
-(require 'mmm-auto)
+;; (require 'mmm-auto)
 
-(setq mmm-global-mode 'auto)
+;; (setq mmm-global-mode 'auto)
 
-(mmm-add-mode-ext-class 'html-erb-mode "\\.html\\.erb\\'" 'erb)
-(mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
-(mmm-add-mode-ext-class 'html-erb-mode nil 'html-js)
-(mmm-add-mode-ext-class 'html-erb-mode nil 'html-css)
+;; (mmm-add-mode-ext-class 'html-erb-mode "\\.html\\.erb\\'" 'erb)
+;; (mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
+;; (mmm-add-mode-ext-class 'html-erb-mode nil 'html-js)
+;; (mmm-add-mode-ext-class 'html-erb-mode nil 'html-css)
 
-(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . html-erb-mode))
-(add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'" . html-erb-mode))
+;; (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . html-erb-mode))
+;; (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'" . html-erb-mode))
 
 ;; Optional settings:
 
-(setq mmm-submode-decoration-level 2
-      mmm-parse-when-idle t)
+;; (setq mmm-submode-decoration-level 2
+;;       mmm-parse-when-idle t)
 
 ;; nXML as primary mode (supports only JS and CSS subregions):
 
-(mmm-add-mode-ext-class 'nxml-web-mode nil 'html-js)
-(mmm-add-mode-ext-class 'nxml-web-mode nil 'html-css)
+;; (mmm-add-mode-ext-class 'nxml-web-mode nil 'html-js)
+;; (mmm-add-mode-ext-class 'nxml-web-mode nil 'html-css)
 
-(add-to-list 'auto-mode-alist '("\\.xhtml\\'" . nxml-web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.xhtml\\'" . nxml-web-mode))
 
 ;; ;;; multi-web
 ;; (setq mweb-default-major-mode 'html-erb-mode)
@@ -428,3 +428,27 @@
 ;;                   (css-mode "<style[^>]*>" "</style>")))
 ;; (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5" "erb" "ejs"))
 ;; (multi-web-global-mode 1)
+
+
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+(add-hook 'scala-mode-hook (lambda ()
+                             (ensime-ac-enable)
+                             ))
+;; (defun make-play-doc-url (type &optional member)
+;;   (ensime-make-java-doc-url-helper
+;;    "file:///home/docs/play-2.1.0/documentation/api/scala/" type member))
+;; (add-to-list 'ensime-doc-lookup-map '("^play\\.api\\." . make-play-doc-url))
+(ensime-ac-enable)
+
+(require 'tiling)
+(define-key global-map (kbd "C-<up>"   ) 'windmove-up)
+(define-key global-map (kbd "C-<down>" ) 'windmove-down)
+(define-key global-map (kbd "C-<right>") 'windmove-right)
+(define-key global-map (kbd "C-<left>" ) 'windmove-left)
+;; Tile
+(define-key global-map (kbd "C-\\") 'tiling-cycle) ; accepts prefix number
+(define-key global-map (kbd "C-M-<up>") 'tiling-tile-up)
+(define-key global-map (kbd "C-M-<down>") 'tiling-tile-down)
+(define-key global-map (kbd "C-M-<right>") 'tiling-tile-right)
+(define-key global-map (kbd "C-M-<left>") 'tiling-tile-left);; Another type of representation of same keys, in case your terminal doesn't
