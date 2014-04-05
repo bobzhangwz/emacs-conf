@@ -74,12 +74,16 @@
 
 ;;; whitespace
 ;; clean-up whitespace at save
-(add-hook 'before-save-hook 'whitespace-cleanup)
-(setq whitespace-action '(auto-cleanup)) ;; automatically clean up bad whitespace
-(setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)) ;; only show bad whitespace
+;; (add-hook 'before-save-hook 'whitespace-cleanup)
+;; (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)) ;; only show bad whitespace
+;; (setq prelude-whitespace nil)
 ;; turn on highlight. To configure what is highlighted, customize
 (global-whitespace-mode)
 
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (setq-local prelude-clean-whitespace-on-save nil)
+            ))
 ;; ;;; elscrren
 
 (elscreen-start)
@@ -452,3 +456,36 @@
 (define-key global-map (kbd "C-M-<down>") 'tiling-tile-down)
 (define-key global-map (kbd "C-M-<right>") 'tiling-tile-right)
 (define-key global-map (kbd "C-M-<left>") 'tiling-tile-left);; Another type of representation of same keys, in case your terminal doesn't
+
+
+;;; js2 mode
+(require 'js2-refactor)
+(add-hook 'js2-mode-hook 'ac-js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+(setq ac-js2-evaluate-calls t)
+;; To add completions for external libraries add something like this:
+;;(add-to-list 'ac-js2-external-libraries "path/to/lib/library.js")
+
+;; slime-js
+;; npm install -g swank-js
+(require 'slime)
+(require 'slime-js)
+(add-hook 'js2-mode-hook
+          (lambda ()
+            (slime-js-minor-mode 1)))
+
+;; ido find recenf
+(defun steve-ido-choose-from-recentf ()
+  "Use ido to select a recently opened file from the `recentf-list'"
+  (interactive)
+  (if (and ido-use-virtual-buffers (fboundp 'ido-toggle-virtual-buffers))
+      (ido-switch-buffer)
+    (find-file (ido-completing-read "Open file: " recentf-list nil t))))
+
+(global-set-key (kbd "C-x M-f") 'steve-ido-choose-from-recentf)
+
+;; todotxt
+(require 'todotxt)
+(setq todotxt-file "~/.todo")
+(global-set-key (kbd "C-x t") 'todotxt)

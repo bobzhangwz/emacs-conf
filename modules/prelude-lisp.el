@@ -33,6 +33,7 @@
 ;;; Code:
 
 (require 'prelude-programming)
+(require 'paredit)
 (prelude-ensure-module-deps '(rainbow-delimiters))
 
 ;; Lisp configuration
@@ -41,7 +42,7 @@
 ;; a great lisp coding hook
 (defun prelude-lisp-coding-defaults ()
 
-  ;; (paredit-mode +1)
+  (paredit-mode +1)
 
   (rainbow-delimiters-mode +1))
 
@@ -50,7 +51,7 @@
 ;; interactive modes don't need whitespace checks
 (defun prelude-interactive-lisp-coding-defaults ()
 
-  ;; (paredit-mode +1)
+  (paredit-mode +1)
 
   (rainbow-delimiters-mode +1)
   (whitespace-mode -1))

@@ -20,7 +20,6 @@
 (desktop-save-mode 0)
 
 (global-set-key (kbd "C-c w .") 'wg-reload-session)
-
 (if (and (fboundp 'daemonp) (daemonp))
     ()
   ;; (add-hook 'after-make-frame-functions  'load-wg-session)

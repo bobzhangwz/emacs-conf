@@ -40,6 +40,7 @@
      (defun prelude-clojure-mode-defaults ()
        (subword-mode +1)
        (clojure-test-mode +1)
+       (setq inferior-lisp-program "lein repl")
        (run-hooks 'prelude-lisp-coding-hook))
 
      (setq prelude-clojure-mode-hook 'prelude-clojure-mode-defaults)

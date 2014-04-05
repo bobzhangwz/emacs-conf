@@ -89,7 +89,8 @@
 ;; (color-theme-aalto-light)
 (load-theme 'tsdh-dark t)
 ;; color-theme sets
-(set-default-font "monofur 11")
+(set-frame-font "monofur 11")
+(add-to-list 'default-frame-alist '(font . "monofur-11"))
 
 (provide 'prelude-ui)
 ;;; prelude-ui.el ends here
