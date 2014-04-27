@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: block-code
+# key: ~
+# --
+~~~~~~
+$0
+~~~~~~
