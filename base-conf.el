@@ -12,7 +12,7 @@
 (require 'prelude-js)
 ;; (require 'prelude-latex)
 (require 'prelude-lisp)
-;; (require 'prelude-markdown)
+(require 'prelude-markdown)
 ;; (require 'prelude-mediawiki)
 (require 'prelude-org)
 (require 'prelude-perl)
@@ -111,6 +111,7 @@
 (require 'sr-speedbar)
 (global-set-key (kbd "M-]") 'sr-speedbar-toggle)
 (setq speedbar-use-images nil)
+(setq speedbar-show-unknown-files t)
 
 ;; ;;; hightlight
 
@@ -301,8 +302,8 @@
 ;; (help-at-pt-set-timer)
 
 ;; regular auto-complete initialization
-(require 'auto-complete-config)
-(ac-config-default)
+;; (require 'auto-complete-config)
+;; (ac-config-default)
 
 ;; add the emacs-eclim source
 ;; (require 'ac-emacs-eclim-source)
@@ -314,15 +315,16 @@
 ;; (add-hook 'eclim-mode-hook
 ;;           (lambda ()
 ;;             (local-set-key (kbd "<f5>") 'eclim-java-import-organize)
-;;             (local-set-key (kbd "C-c C-r t") 'eclim-java-import-organize)
+;;             (local-set-key (kbd "C-c C-v o") 'eclim-java-import-organize)
 ;;             (local-set-key (kbd "C-c C-v f t") 'eclim-java-find-type)
 ;;             (local-set-key (kbd "M-.") 'eclim-java-find-declaration)
 ;;             (local-set-key (kbd "C-c C-v f r") 'eclim-java-find-references)
 ;;             (local-set-key (kbd "C-c C-v i") 'eclim-java-show-documentation-for-current-element)
-;;             (local-set-key (kbd "C-c C-v o") 'eclim-java-find-generic)
-;;             (local-set-key (kbd "C-c C-v e") 'eclim-problems)
+;;             (local-set-key (kbd "C-c C-v f f") 'eclim-java-find-generic)
+;;             (local-set-key (kbd "C-c C-v f e") 'eclim-problems)
 ;;             (local-set-key (kbd "C-c C-c") 'eclim-run-class)
 ;;             ))
+;; eclim-java-refactor-rename-symbol-at-point ;; eclim-java-hierarchy ;;  eclim-problems-correct
 
 (set-cursor-color "gold")
   ;;; main-line
@@ -469,21 +471,11 @@
 
 ;; slime-js
 ;; npm install -g swank-js
-(require 'slime)
-(require 'slime-js)
-(add-hook 'js2-mode-hook
-          (lambda ()
-            (slime-js-minor-mode 1)))
-
-;; ido find recenf
-(defun steve-ido-choose-from-recentf ()
-  "Use ido to select a recently opened file from the `recentf-list'"
-  (interactive)
-  (if (and ido-use-virtual-buffers (fboundp 'ido-toggle-virtual-buffers))
-      (ido-switch-buffer)
-    (find-file (ido-completing-read "Open file: " recentf-list nil t))))
-
-(global-set-key (kbd "C-x M-f") 'steve-ido-choose-from-recentf)
+;; (require 'slime)
+;; (require 'slime-js)
+;; (add-hook 'js2-mode-hook
+;;           (lambda ()
+;;             (slime-js-minor-mode 1)))
 
 ;; todotxt
 (require 'todotxt)
@@ -504,3 +496,9 @@
       auto-save-timeout 30              ; number of seconds idle time before auto-save (default: 30)
       auto-save-interval 200            ; number of keystrokes between auto-saves (default: 300)
       )
+
+(add-to-list 'auto-mode-alist '("\\.html$" . nxml-mode))
+
+(when (string-match "^xterm" (getenv "TERM"))
+  (require 'xterm-extras)
+  (xterm-extra-keys))

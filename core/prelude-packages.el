@@ -60,7 +60,8 @@
     move-text auto-highlight-symbol highlight-symbol
     workgroups2 dired+ zencoding-mode autopair fold-dwim main-line
     browse-kill-ring smartparens color-theme elscreen smart-compile
-    git-gutter ensime js2-mode js2-refactor ac-js2 slime slime-js todotxt)
+    git-gutter ensime js2-mode js2-refactor ac-js2 slime slime-js todotxt
+    xterm-frobs)
   "A list of packages to ensure are installed at launch.")
 
 
