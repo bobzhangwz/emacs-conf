@@ -1,4 +1,12 @@
 ;;; project mode conf
+
+(mapcar (lambda (mode-hook) (add-hook mode-hook 'flyspell-prog-mode))
+                '(c-mode-common-hook
+                  emacs-lisp-mode-hook
+                  ruby-mode-hook java-mode-hook
+                  markdown-mode-hook
+                  ))
+
 (mapc (lambda (hook)
         (add-hook hook (lambda ()
                          (set (make-local-variable 'highlight-indentation-offset) 4)

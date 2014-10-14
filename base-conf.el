@@ -326,7 +326,7 @@
 ;;             ))
 ;; eclim-java-refactor-rename-symbol-at-point ;; eclim-java-hierarchy ;;  eclim-problems-correct
 
-(set-cursor-color "gold")
+;; (set-cursor-color "gold")
   ;;; main-line
 (require 'main-line)
 (setq main-line-separator-style 'arrow)
@@ -499,6 +499,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.html$" . nxml-mode))
 
-(when (string-match "^xterm" (getenv "TERM"))
-  (require 'xterm-extras)
-  (xterm-extra-keys))
+;; (when (string-match "^xterm" (getenv "TERM"))
+;;   (require 'xterm-extras)
+;;   (xterm-extra-keys))

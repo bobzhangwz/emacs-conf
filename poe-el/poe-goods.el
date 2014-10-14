@@ -1,3 +1,7 @@
+;;; package --- Summary
+;;; Commentary:
+
+;;; Code:
 (defun run-current-file ()
   (interactive)
   (let (ext-map file-name file-ext prog-name cmd-str)
@@ -160,3 +164,4 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (global-set-key (kbd "<C-M-s-down>") 'zh-copy-line)
 
 (provide 'poe-goods)
+;;; poe-goods ends here
