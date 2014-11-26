@@ -35,12 +35,14 @@
 
 (require 'prelude-lisp)
 
-(defun prelude-remove-elc-on-save ()
-  "If you're saving an elisp file, likely the .elc is no longer valid."
+(defun prelude-recompile-elc-on-save ()
+  "Recompile your elc when saving an elisp file."
   (add-hook 'after-save-hook
             (lambda ()
-              (if (file-exists-p (concat buffer-file-name "c"))
-                  (delete-file (concat buffer-file-name "c"))))
+              (when (and
+                     (string-prefix-p prelude-dir (file-truename buffer-file-name))
+                     (file-exists-p (byte-compile-dest-file buffer-file-name)))
+                (emacs-lisp-byte-compile)))
             nil
             t))
 
@@ -51,6 +53,8 @@ Start `ielm' if it's not already running."
   (prelude-start-or-switch-to 'ielm "*ielm*"))
 
 (define-key emacs-lisp-mode-map (kbd "C-c C-z") 'prelude-visit-ielm)
+(define-key emacs-lisp-mode-map (kbd "C-c C-c") 'eval-defun)
+(define-key emacs-lisp-mode-map (kbd "C-c C-b") 'eval-buffer)
 
 (defun prelude-conditional-emacs-lisp-checker ()
   "Don't check doc style in Emacs Lisp test files."
@@ -62,7 +66,7 @@ Start `ielm' if it's not already running."
   "Sensible defaults for `emacs-lisp-mode'."
   (run-hooks 'prelude-lisp-coding-hook)
   (turn-on-eldoc-mode)
-  (prelude-remove-elc-on-save)
+  (prelude-recompile-elc-on-save)
   (rainbow-mode +1)
   (setq mode-name "EL")
   (prelude-conditional-emacs-lisp-checker))
@@ -71,6 +75,8 @@ Start `ielm' if it's not already running."
 
 (add-hook 'emacs-lisp-mode-hook (lambda ()
                                   (run-hooks 'prelude-emacs-lisp-mode-hook)))
+
+(add-to-list 'auto-mode-alist '("Cask\\'" . emacs-lisp-mode))
 
 ;; ielm is an interactive Emacs Lisp shell
 (defun prelude-ielm-mode-defaults ()
@@ -90,9 +96,21 @@ Start `ielm' if it's not already running."
 (eval-after-load "eldoc"
   '(diminish 'eldoc-mode))
 
+(eval-after-load "ielm"
+  '(progn
+     (define-key ielm-map (kbd "M-(") (prelude-wrap-with "("))
+     (define-key ielm-map (kbd "M-\"") (prelude-wrap-with "\""))))
+
 ;; enable elisp-slime-nav-mode
 (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
   (add-hook hook 'elisp-slime-nav-mode))
+
+(defun conditionally-enable-smartparens-mode ()
+  "Enable `smartparens-mode' in the minibuffer, during `eval-expression'."
+  (if (eq this-command 'eval-expression)
+      (smartparens-mode 1)))
+
+(add-hook 'minibuffer-setup-hook 'conditionally-enable-smartparens-mode)
 
 (provide 'prelude-emacs-lisp)
 

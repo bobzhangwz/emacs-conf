@@ -22,3 +22,6 @@ session*
 /ac-comphist.dat
 /plugins/source
 /tramp
+.cask
+tramp
+/var/pcache

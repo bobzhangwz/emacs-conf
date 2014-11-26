@@ -34,8 +34,11 @@
 ;;; Code:
 (require 'cl)
 (require 'package)
+
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "http://melpa.org/packages/") t)
+
+;; '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 
@@ -44,30 +47,83 @@
 (package-initialize)
 
 (defvar prelude-packages
-  '(ace-jump-mode ack-and-a-half dash diminish elisp-slime-nav
-    expand-region flx-ido flycheck gist
-    git-commit-mode gitconfig-mode gitignore-mode grizzl
-    guru-mode helm helm-projectile ido-ubiquitous
-    key-chord magit melpa rainbow-mode
-    smex solarized-theme undo-tree
-    volatile-highlights yasnippet zenburn-theme
+  ;; '(ace-jump-mode ack-and-a-half dash diminish elisp-slime-nav
+  ;;   expand-region flx-ido flycheck gist
+  ;;   git-commit-mode gitconfig-mode gitignore-mode grizzl
+  ;;   guru-mode helm helm-projectile ido-ubiquitous
+  ;;   key-chord magit melpa rainbow-mode
+  ;;   smex solarized-theme undo-tree
+  ;;   volatile-highlights yasnippet zenburn-theme
+  
+  '(ace-jump-mode
+    ace-jump-buffer
+    ace-window
+    ack-and-a-half
+    anzu
+    browse-kill-ring
+    dash
+    discover-my-major
+    diff-hl
+    diminish
+    easy-kill
+    elisp-slime-nav
+    epl
+    expand-region
+    flycheck
+    gist
+    git-timemachine
+    gitconfig-mode
+    gitignore-mode
+    god-mode
+    grizzl
+    guru-mode
+    ov
+    projectile
+    magit
+    move-text
+    operate-on-number
+    rainbow-mode
+    smartparens
+    smartrep
+    undo-tree
+    volatile-highlights
+    zenburn-theme
     ;; my packages
     highlight-indentation cursor-chg auto-complete
     tabbar tabbar-ruler w3m multiple-cursors
     sr-speedbar auto-indent-mode
-    ido-complete-space-or-hyphen ido-yes-or-no  ido-sort-mtime
+    ido-complete-space-or-hyphen
+    ;; ido-yes-or-no
+    ido-sort-mtime
     idomenu ido-vertical-mode flycheck-color-mode-line
     move-text auto-highlight-symbol highlight-symbol
     workgroups2 dired+ zencoding-mode autopair fold-dwim main-line
     browse-kill-ring smartparens color-theme elscreen smart-compile
-    git-gutter ensime js2-mode js2-refactor ac-js2 slime slime-js todotxt
-    xterm-frobs)
+    git-gutter ensime js2-mode js2-refactor ac-js2 slime
+    ;; slime-js
+    todotxt
+    ;; xterm-frobs
+    )
   "A list of packages to ensure are installed at launch.")
 
 
 (defun prelude-packages-installed-p ()
   "Check if all packages in `prelude-packages' are installed."
   (every #'package-installed-p prelude-packages))
+
+(defun prelude-require-package (package)
+  "Install PACKAGE unless already installed."
+  (unless (memq package prelude-packages)
+    (add-to-list 'prelude-packages package))
+  (unless (package-installed-p package)
+    (package-install package)))
+
+(defun prelude-require-packages (packages)
+  "Ensure PACKAGES are installed.
+Missing packages are installed automatically."
+  (mapc #'prelude-require-package packages))
+
+(define-obsolete-function-alias 'prelude-ensure-module-deps 'prelude-require-packages)
 
 (defun prelude-install-packages ()
   "Install all packages listed in `prelude-packages'."
@@ -77,10 +133,20 @@
     (package-refresh-contents)
     (message "%s" " done.")
     ;; install the missing packages
-    (mapc #'package-install
-     (remove-if #'package-installed-p prelude-packages))))
+    (prelude-require-packages prelude-packages)))
 
+;; run package installation
 (prelude-install-packages)
+
+(defun prelude-list-foreign-packages ()
+  "Browse third-party packages not bundled with Prelude.
+
+Behaves similarly to `package-list-packages', but shows only the packages that
+are installed and are not in `prelude-packages'.  Useful for
+removing unwanted packages."
+  (interactive)
+  (package-show-package-list
+   (set-difference package-activated-list prelude-packages)))
 
 (defmacro prelude-auto-install (extension package mode)
   "When file with EXTENSION is opened triggers auto-install of PACKAGE.
@@ -98,26 +164,36 @@ PACKAGE is installed only if not already present.  The file is opened in MODE."
     ("\\.csv\\'" csv-mode csv-mode)
     ("\\.d\\'" d-mode d-mode)
     ("\\.dart\\'" dart-mode dart-mode)
+    ("\\.ex\\'" elixir-mode elixir-mode)
+    ("\\.exs\\'" elixir-mode elixir-mode)
+    ("\\.elixir\\'" elixir-mode elixir-mode)
     ("\\.erl\\'" erlang erlang-mode)
     ("\\.feature\\'" feature-mode feature-mode)
     ("\\.go\\'" go-mode go-mode)
     ("\\.groovy\\'" groovy-mode groovy-mode)
     ("\\.haml\\'" haml-mode haml-mode)
     ("\\.hs\\'" haskell-mode haskell-mode)
+    ("\\.kv\\'" kivy-mode kivy-mode)
     ("\\.latex\\'" auctex LaTeX-mode)
     ("\\.less\\'" less-css-mode less-css-mode)
     ("\\.lua\\'" lua-mode lua-mode)
     ("\\.markdown\\'" markdown-mode markdown-mode)
     ("\\.md\\'" markdown-mode markdown-mode)
     ("\\.ml\\'" tuareg tuareg-mode)
+    ("\\.pp\\'" puppet-mode puppet-mode)
     ("\\.php\\'" php-mode php-mode)
     ("PKGBUILD\\'" pkgbuild-mode pkgbuild-mode)
+    ("\\.rs\\'" rust-mode rust-mode)
     ("\\.sass\\'" sass-mode sass-mode)
     ("\\.scala\\'" scala-mode2 scala-mode)
     ("\\.scss\\'" scss-mode scss-mode)
     ("\\.slim\\'" slim-mode slim-mode)
+    ("\\.swift\\'" swift-mode swift-mode)
     ("\\.textile\\'" textile-mode textile-mode)
-    ("\\.yml\\'" yaml-mode yaml-mode)))
+    ("\\.thrift\\'" thrift thrift-mode)
+    ("\\.yml\\'" yaml-mode yaml-mode)
+    ("\\.yaml\\'" yaml-mode yaml-mode)
+    ("Dockerfile\\'" dockerfile-mode dockerfile-mode)))
 
 ;; markdown-mode doesn't have autoloads for the auto-mode-alist
 ;; so we add them manually if it's already installed
@@ -137,11 +213,6 @@ PACKAGE is installed only if not already present.  The file is opened in MODE."
      (unless (package-installed-p package)
        (prelude-auto-install extension package mode))))
  prelude-auto-install-alist)
-
-(defun prelude-ensure-module-deps (packages)
-  "Ensure PACKAGES are installed.
-Missing packages are installed automatically."
-  (mapc #'package-install (remove-if #'package-installed-p packages)))
 
 (provide 'prelude-packages)
 ;; Local Variables:

@@ -32,38 +32,6 @@
 
 ;;; Code:
 
-;; customize
-(defgroup prelude nil
-  "Emacs Prelude configuration."
-  :prefix "prelude-"
-  :group 'convenience)
-
-(defcustom prelude-auto-save t
-  "Non-nil values enable Prelude's auto save."
-  :type 'boolean
-  :group 'prelude)
-
-(defcustom prelude-guru t
-  "Non-nil values enable guru-mode."
-  :type 'boolean
-  :group 'prelude)
-
-(defcustom prelude-whitespace t
-  "Non-nil values enable Prelude's whitespace visualization."
-  :type 'boolean
-  :group 'prelude)
-
-(defcustom prelude-clean-whitespace-on-save t
-  "Cleanup whitespace from file before it's saved.
-Will only occur if prelude-whitespace is also enabled."
-  :type 'boolean
-  :group 'prelude)
-
-(defcustom prelude-flyspell t
-  "Non-nil values enable Prelude's flyspell support."
-  :type 'boolean
-  :group 'prelude)
-
 ;; Death to the tabs!  However, tabs historically indent to the next
 ;; 8-character offset; specifying anything else will cause *mass*
 ;; confusion, as it will change the appearance of every existing file.
@@ -85,6 +53,9 @@ Will only occur if prelude-whitespace is also enabled."
 (setq-default c-basic-offset 2)
 (setq-default c-basic-indent 2)
 (setq-default c-indent-level 2)
+
+;; Newline at end of file
+(setq require-final-newline t)
 
 ;; delete the selection with a keypress
 (delete-selection-mode t)
@@ -110,13 +81,27 @@ Will only occur if prelude-whitespace is also enabled."
                                          try-complete-lisp-symbol-partially
                                          try-complete-lisp-symbol))
 
+;; smart tab behavior - indent or complete
+(setq tab-always-indent 'complete)
+
 ;; smart pairing for all
 
 ;; (electric-pair-mode t)
 (require 'smartparens-config)
 (setq sp-base-key-bindings 'paredit)
-(setq sp-cancel-autoskip-on-backward-movement nil)
-(smartparens-global-mode +1)
+(setq sp-autoskip-closing-pair 'always)
+(setq sp-hybrid-kill-entire-symbol nil)
+(sp-use-paredit-bindings)
+
+(show-smartparens-global-mode +1)
+
+(define-key prog-mode-map (kbd "M-(") (prelude-wrap-with "("))
+;; FIXME: pick terminal friendly binding
+;; (define-key prog-mode-map (kbd "M-[") (prelude-wrap-with "["))
+(define-key prog-mode-map (kbd "M-\"") (prelude-wrap-with "\""))
+
+;; disable annoying blink-matching-paren
+(setq blink-matching-paren nil)
 
 ;; diminish keeps the modeline tidy
 (require 'diminish)
@@ -138,7 +123,7 @@ Will only occur if prelude-whitespace is also enabled."
 (require 'savehist)
 (setq savehist-additional-variables
       ;; search entries
-      '(search ring regexp-search-ring)
+      '(search-ring regexp-search-ring)
       ;; save every minute
       savehist-autosave-interval 60
       ;; keep the home clean
@@ -149,7 +134,22 @@ Will only occur if prelude-whitespace is also enabled."
 (require 'recentf)
 (setq recentf-save-file (expand-file-name "recentf" prelude-savefile-dir)
       recentf-max-saved-items 500
-      recentf-max-menu-items 15)
+      recentf-max-menu-items 15
+      ;; disable recentf-cleanup on Emacs start, because it can cause
+      ;; problems with remote files
+      recentf-auto-cleanup 'never)
+
+(defun prelude-recentf-exclude-p (file)
+  "A predicate to decide whether to exclude FILE from recentf."
+  (let ((file-dir (file-truename (file-name-directory file))))
+    (-any-p (lambda (dir)
+              (string-prefix-p dir file-dir))
+            (mapcar 'file-truename (list prelude-savefile-dir package-user-dir)))))
+
+(add-to-list 'recentf-exclude 'prelude-recentf-exclude-p)
+;; ignore magit's commit message files
+(add-to-list 'recentf-exclude "COMMIT_EDITMSG\\'")
+
 (recentf-mode +1)
 
 ;; use shift + arrow keys to switch between visible buffers
@@ -166,27 +166,32 @@ Will only occur if prelude-whitespace is also enabled."
              (file-writable-p buffer-file-name))
     (save-buffer)))
 
-(defmacro advise-commands (advice-name commands &rest body)
+(defmacro advise-commands (advice-name commands class &rest body)
   "Apply advice named ADVICE-NAME to multiple COMMANDS.
 
 The body of the advice is in BODY."
   `(progn
      ,@(mapcar (lambda (command)
-                 `(defadvice ,command (before ,(intern (concat (symbol-name command) "-" advice-name)) activate)
+                 `(defadvice ,command (,class ,(intern (concat (symbol-name command) "-" advice-name)) activate)
                     ,@body))
                commands)))
 
 ;; advise all window switching functions
 (advise-commands "auto-save"
                  (switch-to-buffer other-window windmove-up windmove-down windmove-left windmove-right)
+                 before
                  (prelude-auto-save-command))
 
 (add-hook 'mouse-leave-buffer-hook 'prelude-auto-save-command)
 
-;; show-paren-mode: subtle highlighting of matching parens (global-mode)
-(require 'paren)
-(setq show-paren-style 'parenthesis)
-(show-paren-mode +1)
+(when (version<= "24.4" emacs-version)
+  (add-hook 'focus-out-hook 'prelude-auto-save-command))
+
+(defadvice set-buffer-major-mode (after set-major-mode activate compile)
+  "Set buffer major mode according to `auto-mode-alist'."
+  (let* ((name (buffer-name buffer))
+         (mode (assoc-default name auto-mode-alist 'string-match)))
+    (with-current-buffer buffer (if mode (funcall mode)))))
 
 ;; highlight the current line
 (global-hl-line-mode +1)
@@ -195,52 +200,10 @@ The body of the advice is in BODY."
 (volatile-highlights-mode t)
 (diminish 'volatile-highlights-mode)
 
-;; note - this should be after volatile-highlights is required
-;; add the ability to copy and cut the current line, without marking it
-(defadvice kill-ring-save (before smart-copy activate compile)
-  "When called interactively with no active region, copy a single line instead."
-  (interactive
-   (if mark-active (list (region-beginning) (region-end))
-     (message "Copied line")
-     (list (line-beginning-position)
-           (line-end-position)))))
-
-(defadvice kill-region (before smart-cut activate compile)
-  "When called interactively with no active region, kill a single line instead."
-  (interactive
-   (if mark-active (list (region-beginning) (region-end))
-     (list (line-beginning-position)
-           (line-beginning-position 2)))))
-
 ;; tramp, for sudo access
 (require 'tramp)
 ;; keep in mind known issues with zsh - see emacs wiki
 (setq tramp-default-method "ssh")
-
-;; ido-mode
-(require 'ido)
-(require 'ido-ubiquitous)
-(require 'flx-ido)
-(setq ido-enable-prefix nil
-      ido-enable-flex-matching t
-      ido-create-new-buffer 'always
-      ido-use-filename-at-point 'guess
-      ido-max-prospects 10
-      ido-save-directory-list-file (expand-file-name "ido.hist" prelude-savefile-dir)
-      ido-default-file-method 'selected-window)
-(ido-mode +1)
-(ido-ubiquitous-mode +1)
-;; smarter fuzzy matching for ido
-(flx-ido-mode +1)
-;; disable ido faces to see flx highlights
-(setq ido-use-faces nil)
-
-;; smex, remember recently and most frequently used commands
-(require 'smex)
-(setq smex-save-file (expand-file-name ".smex-items" prelude-savefile-dir))
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 (set-default 'imenu-auto-rescan t)
 
@@ -292,21 +255,14 @@ The body of the advice is in BODY."
 (require 'projectile)
 (setq projectile-cache-file (expand-file-name  "projectile.cache" prelude-savefile-dir))
 (projectile-global-mode t)
-(diminish 'projectile-mode "Prjl")
 
-(require 'helm-misc)
-(require 'helm-projectile)
+;; anzu-mode enhances isearch & query-replace by showing total matches and current match position
+(require 'anzu)
+(diminish 'anzu-mode)
+(global-anzu-mode)
 
-(defun helm-prelude ()
-  "Preconfigured `helm'."
-  (interactive)
-  (condition-case nil
-    (if (projectile-project-root)
-        (helm-projectile)
-      ;; otherwise fallback to helm-mini
-      (helm-mini))
-    ;; fall back to helm mini if an error occurs (usually in projectile-project-root)
-    (error ())))
+(global-set-key (kbd "M-%") 'anzu-query-replace)
+(global-set-key (kbd "C-M-%") 'anzu-query-replace-regexp)
 
 ;; shorter aliases for ack-and-a-half commands
 (defalias 'ack 'ack-and-a-half)
@@ -335,43 +291,42 @@ The body of the advice is in BODY."
 ;; clean up obsolete buffers automatically
 (require 'midnight)
 
+;; smarter kill-ring navigation
+(require 'browse-kill-ring)
+(browse-kill-ring-default-keybindings)
+(global-set-key (kbd "s-y") 'browse-kill-ring)
+
+(defadvice exchange-point-and-mark (before deactivate-mark activate compile)
+  "When called with no active region, do not activate mark."
+  (interactive
+   (list (not (region-active-p)))))
+
+(defmacro with-region-or-buffer (func)
+  "When called with no active region, call FUNC on current buffer."
+  `(defadvice ,func (before with-region-or-buffer activate compile)
+     (interactive
+      (if mark-active
+          (list (region-beginning) (region-end))
+        (list (point-min) (point-max))))))
+
+(with-region-or-buffer indent-region)
+(with-region-or-buffer untabify)
+
 ;; automatically indenting yanked text if in programming-modes
-(defvar yank-indent-modes
-  '(LaTeX-mode TeX-mode)
-  "Modes in which to indent regions that are yanked (or yank-popped).
-Only modes that don't derive from `prog-mode' should be listed here.")
-
-(defvar yank-indent-blacklisted-modes
-  '(python-mode slim-mode haml-mode)
-  "Modes for which auto-indenting is suppressed.")
-
-(defvar yank-advised-indent-threshold 1000
-  "Threshold (# chars) over which indentation does not automatically occur.")
-
 (defun yank-advised-indent-function (beg end)
   "Do indentation, as long as the region isn't too large."
-  (if (<= (- end beg) yank-advised-indent-threshold)
+  (if (<= (- end beg) prelude-yank-indent-threshold)
       (indent-region beg end nil)))
 
-(defadvice yank (after yank-indent activate)
-  "If current mode is one of 'yank-indent-modes,
+(advise-commands "indent" (yank yank-pop) after
+  "If current mode is one of `prelude-yank-indent-modes',
 indent yanked text (with prefix arg don't indent)."
   (if (and (not (ad-get-arg 0))
-           (not (member major-mode yank-indent-blacklisted-modes))
+           (not (member major-mode prelude-indent-sensitive-modes))
            (or (derived-mode-p 'prog-mode)
-               (member major-mode yank-indent-modes)))
+               (member major-mode prelude-yank-indent-modes)))
       (let ((transient-mark-mode nil))
-    (yank-advised-indent-function (region-beginning) (region-end)))))
-
-(defadvice yank-pop (after yank-pop-indent activate)
-  "If current mode is one of 'yank-indent-modes,
-indent yanked text (with prefix arg don't indent)."
-  (if (and (not (ad-get-arg 0))
-           (not (member major-mode yank-indent-blacklisted-modes))
-           (or (derived-mode-p 'prog-mode)
-               (member major-mode yank-indent-modes)))
-    (let ((transient-mark-mode nil))
-    (yank-advised-indent-function (region-beginning) (region-end)))))
+        (yank-advised-indent-function (region-beginning) (region-end)))))
 
 ;; abbrev config
 (add-hook 'text-mode-hook 'abbrev-mode)
@@ -398,6 +353,28 @@ indent yanked text (with prefix arg don't indent)."
 (setq semanticdb-default-save-directory
       (expand-file-name "semanticdb" prelude-savefile-dir))
 
+;; Compilation from Emacs
+(defun prelude-colorize-compilation-buffer ()
+  "Colorize a compilation mode buffer."
+  (interactive)
+  ;; we don't want to mess with child modes such as grep-mode, ack, ag, etc
+  (when (eq major-mode 'compilation-mode)
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region (point-min) (point-max)))))
+
+(require 'compile)
+(setq compilation-ask-about-save nil  ; Just save before compiling
+      compilation-always-kill t       ; Just kill old compile processes before
+                                        ; starting the new one
+      compilation-scroll-output 'first-error ; Automatically scroll to first
+                                        ; error
+      )
+
+;; Colorize output of Compilation Mode, see
+;; http://stackoverflow.com/a/3072831/355252
+(require 'ansi-color)
+(add-hook 'compilation-filter-hook #'prelude-colorize-compilation-buffer)
+
 ;; enable Prelude's keybindings
 (prelude-global-mode t)
 
@@ -407,6 +384,29 @@ indent yanked text (with prefix arg don't indent)."
 
 ;; enable winner-mode to manage window configurations
 (winner-mode +1)
+
+;; diff-hl
+(global-diff-hl-mode +1)
+(add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+
+;; easy-kill
+(global-set-key [remap kill-ring-save] 'easy-kill)
+(global-set-key [remap mark-sexp] 'easy-mark)
+
+;; operate-on-number
+(require 'operate-on-number)
+(smartrep-define-key global-map "C-c ."
+  '(("+" . apply-operation-to-number-at-point)
+    ("-" . apply-operation-to-number-at-point)
+    ("*" . apply-operation-to-number-at-point)
+    ("/" . apply-operation-to-number-at-point)
+    ("\\" . apply-operation-to-number-at-point)
+    ("^" . apply-operation-to-number-at-point)
+    ("<" . apply-operation-to-number-at-point)
+    (">" . apply-operation-to-number-at-point)
+    ("#" . apply-operation-to-number-at-point)
+    ("%" . apply-operation-to-number-at-point)
+    ("'" . operate-on-number-at-point)))
 
 (provide 'prelude-editor)
 

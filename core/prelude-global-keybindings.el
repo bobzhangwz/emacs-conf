@@ -48,7 +48,8 @@
 (global-set-key (kbd "C-^") 'prelude-top-join-line)
 
 ;; Start proced in a similar manner to dired
-(global-set-key (kbd "C-x p") 'proced)
+(unless (eq system-type 'darwin)
+    (global-set-key (kbd "C-x p") 'proced))
 
 ;; Start eshell or switch to it if it's active.
 (global-set-key (kbd "C-x m") 'eshell)
@@ -60,15 +61,20 @@
 (global-set-key (kbd "C-x M-m") 'shell)
 
 ;; If you want to be able to M-x without meta
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
+(global-set-key (kbd "C-x C-m") 'smex)
 
 ;; A complementary binding to the apropos-command (C-h a)
 (define-key 'help-command "A" 'apropos)
 
-(global-set-key (kbd "C-h C-f") 'find-function)
-(global-set-key (kbd "C-h C-k") 'find-function-on-key)
-(global-set-key (kbd "C-h C-v") 'find-variable)
-(global-set-key (kbd "C-h C-l") 'find-library)
+;; A quick major mode help with discover-my-major
+(define-key 'help-command (kbd "C-m") 'discover-my-major)
+
+(define-key 'help-command (kbd "C-f") 'find-function)
+(define-key 'help-command (kbd "C-k") 'find-function-on-key)
+(define-key 'help-command (kbd "C-v") 'find-variable)
+(define-key 'help-command (kbd "C-l") 'find-library)
+
+(define-key 'help-command (kbd "C-i") 'info-display-manual)
 
 ;; a complement to the zap-to-char command, that doesn't eat up the target character
 (autoload 'zap-up-to-char "misc" "Kill up to, but not including ARGth occurrence of CHAR.")
@@ -96,6 +102,9 @@
 ;; replace buffer-menu with ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+(unless (fboundp 'toggle-frame-fullscreen)
+  (global-set-key (kbd "<f11>") 'prelude-fullscreen))
+
 ;; toggle menu-bar visibility
 (global-set-key (kbd "<f12>") 'menu-bar-mode)
 
@@ -103,49 +112,55 @@
 
 (global-set-key (kbd "C-=") 'er/expand-region)
 
-;; make C-x C-x usable with transient-mark-mode
-(define-key global-map
-  [remap exchange-point-and-mark]
-  'prelude-exchange-point-and-mark)
+;; ;; make C-x C-x usable with transient-mark-mode
+;; (define-key global-map
+;;   [remap exchange-point-and-mark]
+;;   'prelude-exchange-point-and-mark)
 
-(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-(global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+;; (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+;; (global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 
-;; myown key set
-(global-set-key (kbd "C-S-j") 'join-line)
-(global-set-key (kbd "M-o") 'other-window)
-(global-set-key (kbd "<f8> q") 'query-replace)
-(global-set-key (kbd "<f8> Q") 'query-replace-regexp)
+;; ;; myown key set
+;; (global-set-key (kbd "C-S-j") 'join-line)
+;; (global-set-key (kbd "M-o") 'other-window)
+;; (global-set-key (kbd "<f8> q") 'query-replace)
+;; (global-set-key (kbd "<f8> Q") 'query-replace-regexp)
 
-(global-set-key "\C-v" '(lambda () (interactive) (scroll-up 8)))
-(global-set-key "\M-v" '(lambda () (interactive) (scroll-down 8)))
+;; (global-set-key "\C-v" '(lambda () (interactive) (scroll-up 8)))
+;; (global-set-key "\M-v" '(lambda () (interactive) (scroll-down 8)))
 
-;; key chords
-(require 'key-chord)
+;; ;; key chords
+;; (require 'key-chord)
 
-(key-chord-define-global "jm" 'ace-jump-word-mode)
-(key-chord-define-global "jl" 'ace-jump-line-mode)
-(key-chord-define-global "jk" 'ace-jump-char-mode)
-(key-chord-define-global "JJ" 'prelude-switch-to-previous-buffer)
-(key-chord-define-global "uu" 'undo-tree-visualize)
-(key-chord-define-global "qq" 'query-replace)
-(key-chord-define-global "vp" 'query-replace-regexp)
+;; (key-chord-define-global "jm" 'ace-jump-word-mode)
+;; (key-chord-define-global "jl" 'ace-jump-line-mode)
+;; (key-chord-define-global "jk" 'ace-jump-char-mode)
+;; (key-chord-define-global "JJ" 'prelude-switch-to-previous-buffer)
+;; (key-chord-define-global "uu" 'undo-tree-visualize)
+;; (key-chord-define-global "qq" 'query-replace)
+;; (key-chord-define-global "vp" 'query-replace-regexp)
 
-(key-chord-mode +1)
+;; (key-chord-mode +1)
 
-;; make some use of the Super key
-(define-key global-map [?\s-d] 'projectile-find-dir)
-(define-key global-map [?\s-e] 'er/expand-region)
-(define-key global-map [?\s-f] 'projectile-find-file)
-(define-key global-map [?\s-g] 'projectile-grep)
-(define-key global-map [?\s-j] 'prelude-top-join-line)
-(define-key global-map [?\s-k] 'prelude-kill-whole-line)
-(define-key global-map [?\s-l] 'goto-line)
-(define-key global-map [?\s-m] 'magit-status)
-(define-key global-map [?\s-o] 'prelude-open-line-above)
-(define-key global-map [?\s-w] 'delete-frame)
-(define-key global-map [?\s-x] 'exchange-point-and-mark)
-(define-key global-map [?\s-p] 'projectile-switch-project)
+;; ;; make some use of the Super key
+;; (define-key global-map [?\s-d] 'projectile-find-dir)
+;; (define-key global-map [?\s-e] 'er/expand-region)
+;; (define-key global-map [?\s-f] 'projectile-find-file)
+;; (define-key global-map [?\s-g] 'projectile-grep)
+;; (define-key global-map [?\s-j] 'prelude-top-join-line)
+;; (define-key global-map [?\s-k] 'prelude-kill-whole-line)
+;; (define-key global-map [?\s-l] 'goto-line)
+;; (define-key global-map [?\s-m] 'magit-status)
+;; (define-key global-map [?\s-o] 'prelude-open-line-above)
+;; (define-key global-map [?\s-w] 'delete-frame)
+;; (define-key global-map [?\s-x] 'exchange-point-and-mark)
+;; (define-key global-map [?\s-p] 'projectile-switch-project)
+
+(global-set-key (kbd "C-c j") 'ace-jump-mode)
+(global-set-key (kbd "s-.") 'ace-jump-mode)
+(global-set-key (kbd "C-c J") 'ace-jump-buffer)
+(global-set-key (kbd "s->") 'ace-jump-buffer)
+(global-set-key (kbd "s-w") 'ace-window)
 
 (provide 'prelude-global-keybindings)
 

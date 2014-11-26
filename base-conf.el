@@ -1,26 +1,25 @@
-;;;; todo flycheck mode line
-
+;;;; todo flycheck mode line elscreen yes-or-no todo
 (require 'prelude-c)
 (require 'prelude-clojure)
 (require 'prelude-coffee)
 (require 'prelude-common-lisp)
 (require 'prelude-css)
 (require 'prelude-emacs-lisp)
-;; (require 'prelude-erc)
-(require 'prelude-erlang)
-(require 'prelude-haskell)
+(require 'prelude-erc)
+;; (require 'prelude-erlang)
+;; (require 'prelude-haskell)
 (require 'prelude-js)
 ;; (require 'prelude-latex)
 (require 'prelude-lisp)
-(require 'prelude-markdown)
 ;; (require 'prelude-mediawiki)
-(require 'prelude-org)
+;; (require 'prelude-org)
 (require 'prelude-perl)
 (require 'prelude-python)
 (require 'prelude-ruby)
 (require 'prelude-scala)
-;; (require 'prelude-scheme)
+(require 'prelude-scheme)
 ;; (require 'prelude-scss)
+(require 'prelude-web)
 (require 'prelude-xml)
 
 (setq prelude-guru nil)
@@ -40,7 +39,7 @@
 (ido-everywhere 1)
 (ido-ubiquitous 1)
 (ido-vertical-mode 1)
-(ido-yes-or-no-mode 1)
+;; (ido-yes-or-no-mode 1)
 (ido-sort-mtime-mode 1)
 (ido-complete-space-or-hyphen-enable)
 ;; To display TRAMP files before local ones, use:
@@ -86,26 +85,26 @@
             ))
 ;; ;;; elscrren
 
-(elscreen-start)
-(require 'elscreen-buffer-list)
-(global-set-key (kbd "C-x w s") 'elscreen-swap)
-;; show title on frame
-(defun elscreen-frame-title-update ()
-  (when (elscreen-screen-modified-p 'elscreen-frame-title-update)
-    (let* ((screen-list (sort (elscreen-get-screen-list) '<))
-           (screen-to-name-alist (elscreen-get-screen-to-name-alist))
-           (title (mapconcat
-                   (lambda (screen)
-                     (format "%d%s %s"
-                             screen (elscreen-status-label screen)
-                             (get-alist screen screen-to-name-alist)))
-                   screen-list " ")))
-      (if (fboundp 'set-frame-name)
-          (set-frame-name title)
-        (setq frame-title-format title)))))
+;; (elscreen-start)
+;; (require 'elscreen-buffer-list)
+;; (global-set-key (kbd "C-x w s") 'elscreen-swap)
+;; ;; show title on frame
+;; (defun elscreen-frame-title-update ()
+;;   (when (elscreen-screen-modified-p 'elscreen-frame-title-update)
+;;     (let* ((screen-list (sort (elscreen-get-screen-list) '<))
+;;            (screen-to-name-alist (elscreen-get-screen-to-name-alist))
+;;            (title (mapconcat
+;;                    (lambda (screen)
+;;                      (format "%d%s %s"
+;;                              screen (elscreen-status-label screen)
+;;                              (get-alist screen screen-to-name-alist)))
+;;                    screen-list " ")))
+;;       (if (fboundp 'set-frame-name)
+;;           (set-frame-name title)
+;;         (setq frame-title-format title)))))
 
-(eval-after-load "elscreen"
-  '(add-hook 'elscreen-screen-update-hook 'elscreen-frame-title-update))
+;; (eval-after-load "elscreen"
+;;   '(add-hook 'elscreen-screen-update-hook 'elscreen-frame-title-update))
 
 ;;; sr-speedbar
 (require 'sr-speedbar)
@@ -478,9 +477,9 @@
 ;;             (slime-js-minor-mode 1)))
 
 ;; todotxt
-(require 'todotxt)
-(setq todotxt-file "~/.todo")
-(global-set-key (kbd "C-x t") 'todotxt)
+;; (require 'todotxt)
+;; (setq todotxt-file "~/.todo")
+;; (global-set-key (kbd "C-x t") 'todotxt)
 
 
 ;; backup

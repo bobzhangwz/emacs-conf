@@ -33,15 +33,16 @@
 ;;; Code:
 
 (require 'prelude-programming)
-(prelude-ensure-module-deps '(haskell-mode))
+(prelude-require-packages '(haskell-mode))
 
-(defun rgr/hayoo()
-  (interactive)
-  (let* ((default (region-or-word-at-point))
-         (term (read-string (format "Hayoo for the following phrase (%s): "
-                                    default))))
-    (let ((term (if (zerop (length term)) default term)))
-      (browse-url (format "http://holumbus.fh-wedel.de/hayoo/hayoo.html?query=%s&start" term)))))
+
+(eval-after-load 'haskell-mode
+  '(progn
+     (defun prelude-haskell-mode-defaults ()
+       (subword-mode +1)
+       (turn-on-haskell-doc-mode)
+       (turn-on-haskell-indentation)
+       (interactive-haskell-mode +1))
 
 (defun rgr/hayoo-b ()
   (interactive)

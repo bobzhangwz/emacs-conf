@@ -80,8 +80,6 @@
 
 ;; use zenburn as the default theme
 
-
-
 (color-theme-initialize)
 ;; (load-theme 'adwaita t)
 ;; (color-theme-gray30)
@@ -91,6 +89,8 @@
 ;; color-theme sets
 (set-frame-font "monofur 11")
 (add-to-list 'default-frame-alist '(font . "monofur-11"))
+
+;; (load-theme prelude-theme t)
 
 (provide 'prelude-ui)
 ;;; prelude-ui.el ends here
