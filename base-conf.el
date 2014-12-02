@@ -1,32 +1,48 @@
-;;;; todo flycheck mode line elscreen yes-or-no todo
+;;; flycheck mode elscreen
+
+
+;; Emacs IRC client
+(require 'prelude-erc)
+(require 'prelude-ido) ;; Super charges Emacs completion for C-x C-f and more
+;; (require 'prelude-helm) ;; Interface for narrowing and search
+;; (require 'prelude-helm-everywhere) ;; Enable Helm everywhere
+(require 'prelude-company)
+(require 'prelude-key-chord) ;; Binds useful features to key combinations
+;; (require 'prelude-mediawiki)
+;; (require 'prelude-evil)
+
+;;; Programming languages support
 (require 'prelude-c)
 (require 'prelude-clojure)
 (require 'prelude-coffee)
 (require 'prelude-common-lisp)
 (require 'prelude-css)
 (require 'prelude-emacs-lisp)
-(require 'prelude-erc)
 ;; (require 'prelude-erlang)
+(require 'prelude-go)
 ;; (require 'prelude-haskell)
 (require 'prelude-js)
 ;; (require 'prelude-latex)
 (require 'prelude-lisp)
-;; (require 'prelude-mediawiki)
-;; (require 'prelude-org)
+;; (require 'prelude-ocaml)
+;; (require 'prelude-org) ;; Org-mode helps you keep TODO lists, notes and more
 (require 'prelude-perl)
 (require 'prelude-python)
 (require 'prelude-ruby)
 (require 'prelude-scala)
 (require 'prelude-scheme)
-;; (require 'prelude-scss)
-(require 'prelude-web)
+(require 'prelude-shell)
+(require 'prelude-scss)
+(require 'prelude-web) ;; Emacs mode for web templates
 (require 'prelude-xml)
+(require 'prelude-yaml)
 
-(setq prelude-guru nil)
+
 ;;; autopair
 
 ;; (require 'autopair)
 ;; (autopair-global-mode)
+
 ;; (require 'auto-pair+)
 
 
@@ -125,7 +141,8 @@
 (defun highlight-hooks()
   (highlight-symbol-mode t))
 (global-set-key [f9] 'highlight-symbol-at-point)
-(key-chord-define-global "99" 'highlight-symbol-at-point)
+;; (key-chord-define-global "99" 'highlight-symbol-at-point)
+
 ;;; autocomplete
 (load-file "~/.emacs.d/plugins/auto-complete-conf.el")
 ;; yasnippet
@@ -134,6 +151,7 @@
 (require 'yasnippet)
 (add-to-list 'yas-snippet-dirs prelude-snippets-dir)
 (add-to-list 'yas-snippet-dirs prelude-personal-snippets-dir)
+
 (yas-global-mode 1)
 
 ;; term-mode does not play well with yasnippet
@@ -477,9 +495,9 @@
 ;;             (slime-js-minor-mode 1)))
 
 ;; todotxt
-;; (require 'todotxt)
-;; (setq todotxt-file "~/.todo")
-;; (global-set-key (kbd "C-x t") 'todotxt)
+(require 'todotxt)
+(setq todotxt-file "~/.todo")
+(global-set-key (kbd "C-x t") 'todotxt)
 
 
 ;; backup
@@ -501,3 +519,13 @@
 ;; (when (string-match "^xterm" (getenv "TERM"))
 ;;   (require 'xterm-extras)
 ;;   (xterm-extra-keys))
+
+;; turn on automatic bracket insertion by pairs. New in emacs 24
+;; (electric-pair-mode 1)
+
+;; make electric-pair-mode work on more brackets
+(setq electric-pair-pairs '(
+                            (?\" . ?\")
+                            (?\{ . ?\})
+                            (?\[ . ?\])
+                            ) )

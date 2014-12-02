@@ -117,30 +117,30 @@
 ;;   [remap exchange-point-and-mark]
 ;;   'prelude-exchange-point-and-mark)
 
-;; (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-;; (global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+(global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 
 ;; ;; myown key set
-;; (global-set-key (kbd "C-S-j") 'join-line)
-;; (global-set-key (kbd "M-o") 'other-window)
-;; (global-set-key (kbd "<f8> q") 'query-replace)
-;; (global-set-key (kbd "<f8> Q") 'query-replace-regexp)
+(global-set-key (kbd "C-S-j") 'join-line)
+(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "<f8> q") 'query-replace)
+(global-set-key (kbd "<f8> Q") 'query-replace-regexp)
 
-;; (global-set-key "\C-v" '(lambda () (interactive) (scroll-up 8)))
-;; (global-set-key "\M-v" '(lambda () (interactive) (scroll-down 8)))
+(global-set-key "\C-v" '(lambda () (interactive) (scroll-up 8)))
+(global-set-key "\M-v" '(lambda () (interactive) (scroll-down 8)))
 
 ;; ;; key chords
-;; (require 'key-chord)
+(require 'key-chord)
 
-;; (key-chord-define-global "jm" 'ace-jump-word-mode)
-;; (key-chord-define-global "jl" 'ace-jump-line-mode)
-;; (key-chord-define-global "jk" 'ace-jump-char-mode)
-;; (key-chord-define-global "JJ" 'prelude-switch-to-previous-buffer)
-;; (key-chord-define-global "uu" 'undo-tree-visualize)
-;; (key-chord-define-global "qq" 'query-replace)
-;; (key-chord-define-global "vp" 'query-replace-regexp)
+(key-chord-define-global "jm" 'ace-jump-word-mode)
+(key-chord-define-global "jl" 'ace-jump-line-mode)
+(key-chord-define-global "jk" 'ace-jump-char-mode)
+(key-chord-define-global "JJ" 'prelude-switch-to-previous-buffer)
+(key-chord-define-global "uu" 'undo-tree-visualize)
+(key-chord-define-global "qq" 'query-replace)
+(key-chord-define-global "vp" 'query-replace-regexp)
 
-;; (key-chord-mode +1)
+(key-chord-mode +1)
 
 ;; ;; make some use of the Super key
 ;; (define-key global-map [?\s-d] 'projectile-find-dir)
