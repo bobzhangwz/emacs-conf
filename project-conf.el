@@ -31,6 +31,7 @@
 (mapc (lambda (hook)
         (add-hook hook (lambda ()
                          (setq nxml-child-indent 2)
+                         (setq tab-width 2)
                          )))
       '(nxml-mode))
 

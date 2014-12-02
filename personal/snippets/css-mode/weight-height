@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: weight-height
+# key: whb
+# --
+width: $0px;
+height: px;
+background: pink;

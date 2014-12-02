@@ -1,0 +1,26 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: css-default
+# key: default
+# --
+body, h1, p, input, div, span, a, img, ul, li, ol, dl, dt, dd, h2, h3, h4, h5, h6{
+  padding: 0px;
+  margin: 0px;
+  list-style: none; /** 兼容性问题 **/
+  border: 0px;
+}
+
+/** 置body的全局样式(文字三属性) */
+body {
+  color: #393939;
+  font-size: 12;
+  font-family:"宋体";
+}
+
+a {
+  color: #393939;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
