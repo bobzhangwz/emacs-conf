@@ -5,6 +5,7 @@
 (require 'prelude-ido) ;; Super charges Emacs completion for C-x C-f and more
 ;; (require 'prelude-helm) ;; Interface for narrowing and search
 ;; (require 'prelude-helm-everywhere) ;; Enable Helm everywhere
+
 ;; (require 'prelude-company)
 (require 'prelude-key-chord) ;; Binds useful features to key combinations
 ;; (require 'prelude-mediawiki)
@@ -520,7 +521,11 @@
 ;;   (xterm-extra-keys))
 
 ;; turn on automatic bracket insertion by pairs. New in emacs 24
+
 (electric-pair-mode 0)
+
+;; (electric-pair-mode 1)
+
 
 ;; make electric-pair-mode work on more brackets
 (setq electric-pair-pairs '(
@@ -528,6 +533,7 @@
                             (?\{ . ?\})
                             (?\[ . ?\])
                             ) )
+
 
 ;; emmet-mode enable
 (require 'emmet-mode)
