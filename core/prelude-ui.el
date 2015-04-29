@@ -87,8 +87,13 @@
 ;; (color-theme-aalto-light)
 (load-theme 'tsdh-dark t)
 ;; color-theme sets
+(set-language-environment 'UTF-8)
+(set-locale-environment "UTF-8")
+(set-default-font "monofur 11")
 (set-frame-font "monofur 11")
 (add-to-list 'default-frame-alist '(font . "monofur-11"))
+(set-fontset-font "fontset-default" 'unicode '("WenQuanYi Zen Hei" . "unicode-ttf"))
+
 
 ;; (load-theme prelude-theme t)
 

@@ -1,11 +1,11 @@
 ;;; project mode conf
 
 (mapcar (lambda (mode-hook) (add-hook mode-hook 'flyspell-prog-mode))
-                '(c-mode-common-hook
-                  emacs-lisp-mode-hook
-                  ruby-mode-hook java-mode-hook
-                  markdown-mode-hook
-                  ))
+        '(c-mode-common-hook
+          emacs-lisp-mode-hook
+          ruby-mode-hook java-mode-hook
+          markdown-mode-hook
+          ))
 
 (mapc (lambda (hook)
         (add-hook hook (lambda ()
@@ -41,42 +41,25 @@
                          )))
       '(ruby-mode-hook))
 
+(add-hook 'json-mode-hook
+          (lambda ()
+            (make-local-variable 'js-indent-level)
+            (setq js-indent-level 2)))
+
 ;; (add-hook 'prog-mode-hook
 ;;           (lambda (
 ;;                    (setq c-basic-offset 4)
 ;;                    )))
 
-(add-to-list 'auto-mode-alist '("\\.html\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
+;; (add-hook 'web-mode-hook
+;;           (lambda ()
+;;             (emmet-mode 1)
+;;             ))
 
-(add-hook 'nxml-mode-hook 'my-xhtml-extras)
-;;; folding xml
-(defun my-xhtml-extras ()
-  ;; (make-local-variable 'outline-regexp)
-  ;; (setq outline-regexp "\\s *<\\([h][1-6]\\|html\\|body\\|head\\)\\b")
-  ;; (make-local-variable 'outline-level)
-  ;; (setq outline-level 'my-xhtml-outline-level)
-  ;; (outline-minor-mode 1)
-  (hs-minor-mode 1))
+(add-hook 'scss-mode 'emmet-mode)
+(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+(add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
 
-(defun my-xhtml-outline-level ()
-  (save-excursion (re-search-forward html-outline-level))
-  (let ((tag (buffer-substring (match-beginning 1) (match-end 1))))
-    (if (eq (length tag) 2)
-        (- (aref tag 1) ?0)
-      0)))
-
-(add-to-list 'hs-special-modes-alist
-             '(nxml-mode
-               "<!--\\|<[^/>]>\\|<[^/][^>]*[^/]>"
-               ""
-               "<!--" ;; won't work on its own; uses syntax table
-               (lambda (arg) (my-nxml-forward-element))
-               nil))
-
-(defun my-nxml-forward-element ()
-  (let ((nxml-sexp-element-flag))
-    (setq nxml-sexp-element-flag (not (looking-at "<!--")))
-    (unless (looking-at outline-regexp)
-      (condition-case nil
-          (nxml-forward-balanced-item 1)
-        (error nil)))))
+(add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2))) ;; indent 2 spaces.

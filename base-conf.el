@@ -1,12 +1,11 @@
 ;;; flycheck mode elscreen
 
-
 ;; Emacs IRC client
 (require 'prelude-erc)
 (require 'prelude-ido) ;; Super charges Emacs completion for C-x C-f and more
 ;; (require 'prelude-helm) ;; Interface for narrowing and search
 ;; (require 'prelude-helm-everywhere) ;; Enable Helm everywhere
-(require 'prelude-company)
+;; (require 'prelude-company)
 (require 'prelude-key-chord) ;; Binds useful features to key combinations
 ;; (require 'prelude-mediawiki)
 ;; (require 'prelude-evil)
@@ -345,12 +344,11 @@
 ;;             ))
 ;; eclim-java-refactor-rename-symbol-at-point ;; eclim-java-hierarchy ;;  eclim-problems-correct
 
-;; (set-cursor-color "gold")
-  ;;; main-line
-(require 'main-line)
-(setq main-line-separator-style 'arrow)
-(setq main-line-color2 "#36648b")
-(setq main-line-color1 "#123456")
+ ;;; main-line
+;; (require 'main-line)
+;; (setq main-line-separator-style 'arrow)
+;; (setq main-line-color2 "#36648b")
+;; (setq main-line-color1 "#123456")
 
 
 
@@ -481,7 +479,7 @@
 
 ;;; js2 mode
 (require 'js2-refactor)
-(add-hook 'js2-mode-hook 'ac-js2-mode)
+;; (add-hook 'js2-mode-hook 'ac-js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 (setq ac-js2-evaluate-calls t)
@@ -516,14 +514,13 @@
       auto-save-interval 200            ; number of keystrokes between auto-saves (default: 300)
       )
 
-(add-to-list 'auto-mode-alist '("\\.html$" . nxml-mode))
 
 ;; (when (string-match "^xterm" (getenv "TERM"))
 ;;   (require 'xterm-extras)
 ;;   (xterm-extra-keys))
 
 ;; turn on automatic bracket insertion by pairs. New in emacs 24
-;; (electric-pair-mode 1)
+(electric-pair-mode 0)
 
 ;; make electric-pair-mode work on more brackets
 (setq electric-pair-pairs '(
@@ -531,3 +528,12 @@
                             (?\{ . ?\})
                             (?\[ . ?\])
                             ) )
+
+;; emmet-mode enable
+(require 'emmet-mode)
+
+
+(prelude-install-search-engine "bing"     "http://www.bing.com/search?q="               "Bing: ")
+(prelude-install-search-engine "baidu"      "http://www.baidu.com/search?q="              "Baidu: ")
+(global-set-key (kbd "C-c b") 'prelude-bing)
+(global-set-key (kbd "C-c B") 'prelude-baidu)

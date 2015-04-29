@@ -54,7 +54,7 @@
   ;;   key-chord magit melpa rainbow-mode
   ;;   smex solarized-theme undo-tree
   ;;   volatile-highlights yasnippet zenburn-theme
-  
+
   '(ace-jump-mode
     ace-jump-buffer
     ace-window
@@ -97,11 +97,11 @@
     ido-sort-mtime
     idomenu ido-vertical-mode flycheck-color-mode-line
     move-text auto-highlight-symbol highlight-symbol
-    workgroups2 dired+ zencoding-mode autopair fold-dwim main-line
+    workgroups2 dired+ emmet-mode autopair fold-dwim main-line
     browse-kill-ring smartparens color-theme elscreen smart-compile
     git-gutter ensime js2-mode js2-refactor ac-js2 slime
     ;; slime-js
-    todotxt
+    todotxt web-mode
     ;; xterm-frobs
     )
   "A list of packages to ensure are installed at launch.")
