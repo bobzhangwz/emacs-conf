@@ -62,9 +62,9 @@
 (setq ido-sort-mtime-tramp-files-at-end nil)
 
 ;;; anything
-(require 'helm-config)
+;; (require 'helm-config)
 ;; (require 'helm-anything)
-(helm-mode 0)
+;; (helm-mode 0)
 (add-hook 'eshell-mode-hook
           #'(lambda ()
               (define-key eshell-mode-map

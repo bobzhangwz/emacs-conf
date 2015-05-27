@@ -100,7 +100,7 @@
     workgroups2 dired+ emmet-mode autopair fold-dwim main-line
     browse-kill-ring smartparens color-theme elscreen smart-compile
     git-gutter ensime js2-mode js2-refactor ac-js2 slime
-    ;; slime-js
+    key-chord    ;; slime-js
     todotxt web-mode
     ;; xterm-frobs
     )
