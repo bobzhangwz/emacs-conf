@@ -102,6 +102,8 @@
     git-gutter ensime js2-mode js2-refactor ac-js2 slime
     key-chord    ;; slime-js
     todotxt web-mode
+    ;; slime-js
+    todotxt web-mode rainbow-delimiters ac-cider ac-nrepl
     ;; xterm-frobs
     )
   "A list of packages to ensure are installed at launch.")
