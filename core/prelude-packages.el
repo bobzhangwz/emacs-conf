@@ -93,6 +93,9 @@
     tabbar tabbar-ruler w3m multiple-cursors
     sr-speedbar auto-indent-mode
     ido-complete-space-or-hyphen
+    jade-mode
+    stylus-mode
+    rainbow-delimiter
     ;; ido-yes-or-no
     ido-sort-mtime
     idomenu ido-vertical-mode flycheck-color-mode-line

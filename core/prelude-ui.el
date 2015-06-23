@@ -89,9 +89,9 @@
 ;; color-theme sets
 (set-language-environment 'UTF-8)
 (set-locale-environment "UTF-8")
-(set-default-font "monofur 11")
-(set-frame-font "monofur 11")
-(add-to-list 'default-frame-alist '(font . "monofur-11"))
+(set-default-font "Monaco 12")
+(set-frame-font "Monaco 12")
+(add-to-list 'default-frame-alist '(font . "Monaco-12"))
 (set-fontset-font "fontset-default" 'unicode '("WenQuanYi Zen Hei" . "unicode-ttf"))
 
 

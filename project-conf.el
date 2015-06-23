@@ -41,6 +41,12 @@
                          )))
       '(ruby-mode-hook))
 
+(mapc (lambda (hook)
+        (add-hook hook (lambda ()
+                         (smartparens-mode 1)
+                         )))
+      '(jade-mode-hook))
+
 (add-hook 'json-mode-hook
           (lambda ()
             (make-local-variable 'js-indent-level)
@@ -53,12 +59,15 @@
 
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.cjsx$" . coffee-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx$" . jsx-mode))
 ;; (add-hook 'web-mode-hook
 ;;           (lambda ()
 ;;             (emmet-mode 1)
 ;;             ))
 
 (add-hook 'scss-mode 'emmet-mode)
+(add-hook 'coffee-mode 'emmet-mode)
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
 

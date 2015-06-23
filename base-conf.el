@@ -71,7 +71,7 @@
                 [remap pcomplete]
                 'helm-esh-pcomplete)))
 
-
+(setq ns-right-alternate-modifier nil)
 ;;; linum-mode
 (setq linum-format
       (lambda (line)
@@ -275,10 +275,6 @@
 ;; (global-set-key (kbd "M-k") 'tabbar-ruler-tabbar-forward)
 ;; (global-set-key (kbd "M-P") 'tabbar-ruler-tabbar-backward-group)
 ;; (global-set-key (kbd "M-N")  'tabbar-ruler-tabbar-forward-group)
-
-(require 'wcy-swbuffer)
-(global-set-key (kbd "M-j")  'wcy-switch-buffer-backward)
-(global-set-key (kbd "M-k") 'wcy-switch-buffer-forward)
 
 ;;; imenu
 (global-set-key (kbd "M-[") 'idomenu)
@@ -543,3 +539,21 @@
 (prelude-install-search-engine "baidu"      "http://www.baidu.com/search?q="              "Baidu: ")
 (global-set-key (kbd "C-c b") 'prelude-bing)
 (global-set-key (kbd "C-c B") 'prelude-baidu)
+
+;; rainbow-delimiter
+
+;; Enables rainbow-delimiters-mode in Emacs Lisp buffers
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+
+;; Enables rainbow-delimiters-mode in Clojure buffers.
+(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+
+;; enables rainbow-delimiters-mode in other Lisp mode buffers.
+(add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
+(require 'cl-lib)
+(require 'color)
+(cl-loop
+ for index from 1 to rainbow-delimiters-max-face-count
+ do
+ (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
+   (cl-callf color-saturate-name (face-foreground face) 30)))
