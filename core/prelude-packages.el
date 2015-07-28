@@ -95,7 +95,6 @@
     ido-complete-space-or-hyphen
     jade-mode
     stylus-mode
-    rainbow-delimiter
     ;; ido-yes-or-no
     ido-sort-mtime
     idomenu ido-vertical-mode flycheck-color-mode-line

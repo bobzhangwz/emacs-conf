@@ -60,7 +60,7 @@
 (ido-complete-space-or-hyphen-enable)
 ;; To display TRAMP files before local ones, use:
 (setq ido-sort-mtime-tramp-files-at-end nil)
-
+(setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
 ;;; anything
 ;; (require 'helm-config)
 ;; (require 'helm-anything)
@@ -552,8 +552,8 @@
 (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
 (require 'cl-lib)
 (require 'color)
-(cl-loop
- for index from 1 to rainbow-delimiters-max-face-count
- do
- (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
-   (cl-callf color-saturate-name (face-foreground face) 30)))
+;; (cl-loop
+;;  for index from 1 to rainbow-delimiters-max-face-count
+;;  do
+;;  (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
+;;    (cl-callf color-saturate-name (face-foreground face) 30)))
