@@ -103,9 +103,9 @@
     browse-kill-ring smartparens color-theme elscreen smart-compile
     git-gutter ensime js2-mode js2-refactor ac-js2 slime
     key-chord    ;; slime-js
-    todotxt web-mode
+    web-mode ac-emmet ac-html ac-html-bootstrap
     ;; slime-js
-    todotxt web-mode rainbow-delimiters ac-cider ac-nrepl
+    todotxt web-mode rainbow-delimiters ac-cider ac-nrepl editorconfig
     ;; xterm-frobs
     )
   "A list of packages to ensure are installed at launch.")

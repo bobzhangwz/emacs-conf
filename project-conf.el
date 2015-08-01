@@ -1,4 +1,9 @@
 ;;; project mode conf
+;; (require 'editorconfig)
+;; (add-to-list 'edconf-indentation-alist
+;;              '(swift-mode swift-indent-offset)
+;;              '(jade-mode jade-tab-width)
+;;              )
 
 (mapcar (lambda (mode-hook) (add-hook mode-hook 'flyspell-prog-mode))
         '(c-mode-common-hook
@@ -50,12 +55,20 @@
 (add-hook 'json-mode-hook
           (lambda ()
             (make-local-variable 'js-indent-level)
-            (setq js-indent-level 2)))
+            (setq js-indent-level 4)))
 
-;; (add-hook 'prog-mode-hook
-;;           (lambda (
-;;                    (setq c-basic-offset 4)
-;;                    )))
+(add-hook 'js2-mode-hook
+          (lambda ()
+            (setq js2-basic-offset 4)))
+
+(add-hook 'jade-mode-hook
+          (lambda ()
+            (setq c-basic-offset 4)))
+
+(add-hook 'prog-mode-hook
+          (lambda (
+                   (setq c-basic-offset 4)
+                   )))
 
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
