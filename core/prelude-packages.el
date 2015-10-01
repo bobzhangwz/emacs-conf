@@ -105,7 +105,7 @@
     key-chord    ;; slime-js
     web-mode ac-emmet ac-html ac-html-bootstrap
     ;; slime-js
-    todotxt web-mode rainbow-delimiters ac-cider ac-nrepl editorconfig
+    todotxt web-mode rainbow-delimiters ac-cider ac-nrepl
     ;; xterm-frobs
     )
   "A list of packages to ensure are installed at launch.")

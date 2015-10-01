@@ -65,10 +65,10 @@
           (lambda ()
             (setq c-basic-offset 4)))
 
-(add-hook 'prog-mode-hook
-          (lambda (
-                   (setq c-basic-offset 4)
-                   )))
+;; (add-hook 'prog-mode-hook
+;;           (lambda (
+;;                    (setq c-basic-offset 4)
+;;                    )))
 
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
