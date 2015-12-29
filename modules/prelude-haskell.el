@@ -1,6 +1,6 @@
 ;;; prelude-haskell.el --- Emacs Prelude: Nice config for Haskell programming.
 ;;
-;; Copyright © 2011-2013 Bozhidar Batsov
+;; Copyright © 2011-2015 Bozhidar Batsov
 ;;
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: https://github.com/bbatsov/prelude
@@ -40,8 +40,8 @@
   '(progn
      (defun prelude-haskell-mode-defaults ()
        (subword-mode +1)
-       (turn-on-haskell-doc-mode)
-       (turn-on-haskell-indentation)
+       (haskell-doc-mode)
+       (haskell-indentation-mode)
        (interactive-haskell-mode +1))
 
 (defun rgr/hayoo-b ()
